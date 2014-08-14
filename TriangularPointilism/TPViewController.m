@@ -17,24 +17,26 @@
 @implementation TPViewController{
     NSUInteger row;
     NSUInteger pixel;
+    CGFloat num;
+
 }
 
 - (void)viewDidLoad
 {
+    num = 18;
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     NSTimer *timer = [ NSTimer timerWithTimeInterval:0.03f target:self selector:@selector(fire:) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
-    NSUInteger width = self.imageView.bounds.size.width;
+    CGFloat width = self.imageView.bounds.size.width;
     NSUInteger height = self.imageView.bounds.size.height;
-    
     _array = [NSMutableArray array];
-    for (int i = 0; i < width; i++) {
+    for (int i = 0; i < width; i+=num) {
         [self.array addObject:[NSMutableArray array]];
     }
     for (int i = 0; i < self.array.count; i++) {
-        for (int j = 0; j < width; j++) {
-            [self.array[i] addObject:[TPViewController getRGBAsFromImage:self.imageView.image atX:j * 2 andY: i * 2]];
+        for (int j = 0; j < self.array.count; j++) {
+            [self.array[i] addObject:[TPViewController getRGBAsFromImage:self.imageView.image atX:j * 2 * num andY: i * 2 * num]];
 
         }
     }
@@ -80,11 +82,10 @@
     // Dispose of any resources that can be recreated.
 }
 - (void)fire:(NSTimer *)timer{
-    unsigned int num = 18;
-    pixel+=num;
+    pixel++;
     if (pixel >= self.array.count) {
         pixel = 0;
-        row+=num;
+        row++;
     }
     if (row >= self.array.count) {
         [timer invalidate];
@@ -93,7 +94,7 @@
     self.label.text = [NSString stringWithFormat:@"Row: %d Pixel: %d", row, pixel];
 
     self.view.backgroundColor = [self.array[row] objectAtIndex:pixel];
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(pixel, row, num, num)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(pixel * num, row * num, num, num)];
     view.backgroundColor = self.view.backgroundColor;
     [self.imageView addSubview:view];
 }
