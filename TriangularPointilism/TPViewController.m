@@ -7,7 +7,7 @@
 //
 
 #import "TPViewController.h"
-
+#import <CoreGraphics/CoreGraphics.h>
 @interface TPViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UILabel *label;
@@ -23,10 +23,10 @@
 
 - (void)viewDidLoad
 {
-    num = 18;
+    num = 12;
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    NSTimer *timer = [ NSTimer timerWithTimeInterval:0.03f target:self selector:@selector(fire:) userInfo:nil repeats:YES];
+    NSTimer *timer = [ NSTimer timerWithTimeInterval:0.003f target:self selector:@selector(fire:) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
     CGFloat width = self.imageView.bounds.size.width;
     NSUInteger height = self.imageView.bounds.size.height;
@@ -42,7 +42,7 @@
     }
 
     
-    
+    drawTriangle(UIGraphicsGetCurrentContext(), self.view.center, self.view.frame.origin, CGPointMake(20, 2000));
 }
 + (UIColor *)getRGBAsFromImage:(UIImage*)image atX:(int)xx andY:(int)yy{
     UIColor *color;
@@ -95,9 +95,22 @@
 
     self.view.backgroundColor = [self.array[row] objectAtIndex:pixel];
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(pixel * num, row * num, num, num)];
-    view.backgroundColor = self.view.backgroundColor;
     [self.imageView addSubview:view];
+
+    drawTriangle(UIGraphicsGetCurrentContext(), CGPointMake(view.frame.origin.x - view.frame.size.width/2.0, view.frame.origin.y - view.frame.size.height), CGPointMake(view.frame.origin.x - view.frame.size.width/2.0, view.frame.origin.y), CGPointMake(view.frame.origin.x + view.frame.size.width/2.0, view.frame.origin.y - view.frame.size.height));
+    view.backgroundColor = self.view.backgroundColor;
+   
 }
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+
+void drawTriangle(CGContextRef context, CGPoint startPoint, CGPoint secondPoint, CGPoint lastPoint)
+{
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path moveToPoint:startPoint];
+    [path addLineToPoint:secondPoint];
+    [path addLineToPoint:lastPoint];
+    [path closePath];
+    [[UIColor redColor] setFill];
+    [path fill];
+    
 }
 @end
