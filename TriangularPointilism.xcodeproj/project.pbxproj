@@ -21,6 +21,7 @@
 		1A9D6C07199BF7F6000AC1F5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A9D6BE9199BF7F6000AC1F5 /* UIKit.framework */; };
 		1A9D6C0F199BF7F6000AC1F5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1A9D6C0D199BF7F6000AC1F5 /* InfoPlist.strings */; };
 		1A9D6C11199BF7F6000AC1F5 /* TriangularPointilismTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A9D6C10199BF7F6000AC1F5 /* TriangularPointilismTests.m */; };
+		1AC875A3199E7ADF006C7BA9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC875A2199E7ADF006C7BA9 /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		1A9D6C0C199BF7F6000AC1F5 /* TriangularPointilismTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TriangularPointilismTests-Info.plist"; sourceTree = "<group>"; };
 		1A9D6C0E199BF7F6000AC1F5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1A9D6C10199BF7F6000AC1F5 /* TriangularPointilismTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TriangularPointilismTests.m; sourceTree = "<group>"; };
+		1AC875A2199E7ADF006C7BA9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1AC875A3199E7ADF006C7BA9 /* QuartzCore.framework in Frameworks */,
 				1A9D6BE8199BF7F6000AC1F5 /* CoreGraphics.framework in Frameworks */,
 				1A9D6BEA199BF7F6000AC1F5 /* UIKit.framework in Frameworks */,
 				1A9D6BE6199BF7F6000AC1F5 /* Foundation.framework in Frameworks */,
@@ -101,6 +104,7 @@
 		1A9D6BE4199BF7F6000AC1F5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1AC875A2199E7ADF006C7BA9 /* QuartzCore.framework */,
 				1A9D6BE5199BF7F6000AC1F5 /* Foundation.framework */,
 				1A9D6BE7199BF7F6000AC1F5 /* CoreGraphics.framework */,
 				1A9D6BE9199BF7F6000AC1F5 /* UIKit.framework */,
@@ -457,6 +461,7 @@
 				1A9D6C16199BF7F6000AC1F5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1A9D6C17199BF7F6000AC1F5 /* Build configuration list for PBXNativeTarget "TriangularPointilismTests" */ = {
 			isa = XCConfigurationList;
@@ -465,6 +470,7 @@
 				1A9D6C19199BF7F6000AC1F5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
