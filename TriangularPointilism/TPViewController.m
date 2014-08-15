@@ -40,7 +40,7 @@
     for (int i = 0; i < self.array.count; i++) {
         for (int j = 0; j < self.array.count; j++) {
             [self.array[i] addObject:[TPViewController getRGBAsFromImage:self.imageView.image atX:j * 2 * num andY: i * 2 * num]];
-            int xIndex = ((j * 2 * num) + (num/2.0));
+            int xIndex = ((j * 2 * num) - (num/2.0));
             int yIndex = ((i * 2 * num) + (num/2.0));
             xIndex %= (int)width * 2;
             yIndex %= (int)width * 2;
