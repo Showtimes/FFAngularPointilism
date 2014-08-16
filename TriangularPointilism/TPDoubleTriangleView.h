@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TPDoubleTriangleView : UIView
-
+@interface TPDoubleTriangleView : UIImageView
+- (void)start;
 @end
