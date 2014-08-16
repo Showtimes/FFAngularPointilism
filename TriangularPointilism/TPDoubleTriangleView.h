@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface TPDoubleTriangleView : UIImageView
+- (void)applyFilter;
 - (void)start;
 @end

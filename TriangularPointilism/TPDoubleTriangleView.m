@@ -42,6 +42,10 @@
     }
 }
 + (UIColor *)getRGBAsFromImage:(UIImage*)image atX:(int)xx andY:(int)yy{
+    /**
+     * Modified logic from Olie via http://stackoverflow.com/a/1262893
+     */
+     
     UIColor *color;
     CGImageRef imageRef = [image CGImage];
     NSUInteger width = CGImageGetWidth(imageRef);
@@ -105,6 +109,34 @@
 - (void)executeTimer{
     NSTimer *timer = [NSTimer timerWithTimeInterval:0.03f target:self selector:@selector(fire:) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
+}
+
+- (void)applyFilter{
+    while (row < self.array.count) {
+    pixel++;
+    if (pixel >= self.array.count) {
+        pixel = 0;
+        row++;
+    }
+        if (row == self.array.count) {
+            break;
+        }
+    
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(pixel * num, row * num, num, num)];
+    view.backgroundColor = [self.array[row] objectAtIndex:pixel];
+    [self addSubview:view];
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path moveToPoint:CGPointMake(view.frame.origin.x , view.frame.origin.y + (view.frame.size.height))];
+    [path addLineToPoint:CGPointMake(view.frame.origin.x , view.frame.origin.y )];
+    [path addLineToPoint:CGPointMake(view.frame.origin.x + view.frame.size.width, view.frame.origin.y + view.frame.size.height)];
+    [path closePath];
+    CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+    shapeLayer.path = path.CGPath;
+    shapeLayer.strokeColor = [[UIColor blackColor] CGColor];
+    shapeLayer.fillColor = [((UIColor *)[self.array2[row] objectAtIndex:pixel]) CGColor];
+    shapeLayer.lineWidth = 0;
+    [self.layer addSublayer:shapeLayer];
+    }
 }
 
 

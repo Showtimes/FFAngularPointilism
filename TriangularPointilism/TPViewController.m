@@ -38,7 +38,7 @@
 - (IBAction)buttonPressed:(id)sender {
     
     self.slider.enabled = NO;
-    [self.imageView start];
+    [self.imageView applyFilter];
 }
 
 @end
