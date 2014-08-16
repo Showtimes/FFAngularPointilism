@@ -13,11 +13,10 @@
 @interface TPViewController ()
 @property (weak, nonatomic) IBOutlet TPDoubleTriangleView *imageView;
 @property (weak, nonatomic) IBOutlet UILabel *label;
-@property (strong, nonatomic) NSMutableArray *array;
-@property (strong, nonatomic) NSMutableArray *array2;
 @property (strong, nonatomic, readwrite) UIImage *image;
 @property (weak, nonatomic) IBOutlet UISlider *slider;
-@property (strong, nonatomic) TPDoubleTriangleView *ff;
+@property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *speedIndicationLabels;
+@property (weak, nonatomic) IBOutlet UISwitch *switchControl;
 @end
 
 @implementation TPViewController
@@ -38,11 +37,33 @@
     [super viewDidLoad];
 }
 
+- (void)hideSpeedIndicators:(BOOL)hide{
+    [self.speedIndicationLabels enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [obj setHidden:hide];
+    }];
+}
+
 - (IBAction)buttonPressed:(id)sender {
     
     self.slider.enabled = NO;
-    self.imageView.timerTimeInterval = (1.0f - self.slider.value) / 5.0f;
-    [self.imageView start];
+    self.imageView.timerTimeInterval = (1.001f - self.slider.value) / 5.0f;
+    if (self.switchControl.on) {
+        [self.imageView start];
+    }
+    else {
+        [self.imageView applyFilter];
+    }
 }
+- (IBAction)switchFlipped:(UISwitch *)sender {
+    if (sender.on) {
+        self.slider.enabled = YES;
+        [self hideSpeedIndicators:NO];
+    }
+    else {
+        self.slider.enabled = NO;
+        [self hideSpeedIndicators:YES];
+    }
+}
+
 
 @end

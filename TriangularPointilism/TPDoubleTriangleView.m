@@ -26,7 +26,7 @@
     return _timerTimeInterval;
 }
 - (void)awakeFromNib{
-    num = 18;
+    num = 12;
     
     CGFloat width = self.bounds.size.width;
     _array = [NSMutableArray array];
