@@ -7,8 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-
+/**
+ * ## This subclass currently requires nib instantiation ##
+ */
 @interface TPDoubleTriangleView : UIImageView
+
+
+//Non-Animation Functionality
 - (void)applyFilter;
+
+// Animation Functionality
+@property (nonatomic) NSTimeInterval timerTimeInterval;
 - (void)start;
 @end

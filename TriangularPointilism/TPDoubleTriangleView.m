@@ -18,8 +18,15 @@
     
 }
 
+- (NSTimeInterval)timerTimeInterval{
+    NSAssert(_timerTimeInterval > 0, @"TIME CANNOT BE LESS THAN 0");
+    if (_timerTimeInterval == 0) {
+        return 0.03;
+    }
+    return _timerTimeInterval;
+}
 - (void)awakeFromNib{
-    num = 12;
+    num = 18;
     
     CGFloat width = self.bounds.size.width;
     _array = [NSMutableArray array];
@@ -84,20 +91,7 @@
         return;
     }
     
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(pixel * num, row * num, num, num)];
-    view.backgroundColor = [self.array[row] objectAtIndex:pixel];
-    [self addSubview:view];
-    UIBezierPath *path = [UIBezierPath bezierPath];
-    [path moveToPoint:CGPointMake(view.frame.origin.x , view.frame.origin.y + (view.frame.size.height))];
-    [path addLineToPoint:CGPointMake(view.frame.origin.x , view.frame.origin.y )];
-    [path addLineToPoint:CGPointMake(view.frame.origin.x + view.frame.size.width, view.frame.origin.y + view.frame.size.height)];
-    [path closePath];
-    CAShapeLayer *shapeLayer = [CAShapeLayer layer];
-    shapeLayer.path = path.CGPath;
-    shapeLayer.strokeColor = [[UIColor blackColor] CGColor];
-    shapeLayer.fillColor = [((UIColor *)[self.array2[row] objectAtIndex:pixel]) CGColor];
-    shapeLayer.lineWidth = 0;
-    [self.layer addSublayer:shapeLayer];
+    [self drawTile];
     
 }
 
@@ -107,7 +101,7 @@
 }
 
 - (void)executeTimer{
-    NSTimer *timer = [NSTimer timerWithTimeInterval:0.03f target:self selector:@selector(fire:) userInfo:nil repeats:YES];
+    NSTimer *timer = [NSTimer timerWithTimeInterval:self.timerTimeInterval target:self selector:@selector(fire:) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
 }
 
@@ -122,6 +116,11 @@
             break;
         }
     
+        [self drawTile];
+    }
+}
+
+- (void)drawTile{
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(pixel * num, row * num, num, num)];
     view.backgroundColor = [self.array[row] objectAtIndex:pixel];
     [self addSubview:view];
@@ -136,8 +135,6 @@
     shapeLayer.fillColor = [((UIColor *)[self.array2[row] objectAtIndex:pixel]) CGColor];
     shapeLayer.lineWidth = 0;
     [self.layer addSublayer:shapeLayer];
-    }
 }
-
 
 @end
