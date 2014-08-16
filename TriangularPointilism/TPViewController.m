@@ -34,11 +34,15 @@
  
      
 }
+- (void)viewDidLoad{
+    [super viewDidLoad];
+}
 
 - (IBAction)buttonPressed:(id)sender {
     
     self.slider.enabled = NO;
-    [self.imageView applyFilter];
+    self.imageView.timerTimeInterval = (1.0f - self.slider.value) / 5.0f;
+    [self.imageView start];
 }
 
 @end
