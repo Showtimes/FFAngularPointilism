@@ -14,6 +14,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *label;
 @property (strong, nonatomic) NSMutableArray *array;
 @property (strong, nonatomic) NSMutableArray *array2;
+@property (strong, nonatomic, readwrite) UIImage *image;
+@property (weak, nonatomic) IBOutlet UISlider *slider;
 @end
 
 @implementation TPViewController{
@@ -23,13 +25,23 @@
 
 }
 
+- (UIImage *)image{
+    if (!_image) {
+        UIGraphicsBeginImageContext(self.imageView.frame.size);
+        {
+            [self.imageView.layer renderInContext:UIGraphicsGetCurrentContext()];
+            _image = UIGraphicsGetImageFromCurrentImageContext();
+        }
+    }
+    return _image;
+}
+
 - (void)viewDidLoad
 {
     num = 12;
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    NSTimer *timer = [ NSTimer timerWithTimeInterval:0.009f target:self selector:@selector(fire:) userInfo:nil repeats:YES];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
+    
     CGFloat width = self.imageView.bounds.size.width;
     _array = [NSMutableArray array];
     _array2 = [NSMutableArray array];
@@ -118,6 +130,7 @@
     shapeLayer.lineWidth = 0;
    // shapeLayer.anchorPoint = CGPointMake(shapeLayer.anchorPoint.x, shapeLayer.anchorPoint.y + view.frame.size.height);
     [self.imageView.layer addSublayer:shapeLayer];
+    self.image = nil;
    
 }
 
@@ -134,7 +147,14 @@ void drawTriangle(CGPoint startPoint, CGPoint secondPoint, CGPoint lastPoint)
     shapeLayer.strokeColor = [[UIColor blackColor] CGColor];
     shapeLayer.fillColor = [[UIColor blueColor] CGColor];
     shapeLayer.lineWidth = 2;
-    
-    
+}
+- (IBAction)buttonPressed:(id)sender {
+    [self executeTimer];
+    self.slider.enabled = NO;
+}
+
+- (void)executeTimer{
+    NSTimer *timer = [ NSTimer timerWithTimeInterval:(1.0f - self.slider.value) / 5.0f target:self selector:@selector(fire:) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
 }
 @end

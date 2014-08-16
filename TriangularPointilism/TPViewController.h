@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface TPViewController : UIViewController
-
+@property (strong, nonatomic, readonly) UIImage *image;
 @end
