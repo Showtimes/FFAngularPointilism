@@ -2,4 +2,4 @@ Pointilism
 ==========
 
 
-![Animation Demo](https://www.dropbox.com/s/feuygbnaipjhcqp/TriangularPoint.gif)
+![Animation Demo](https://s3.amazonaws.com/Find-and-Form/portolio/TriangularPoint.gif)
