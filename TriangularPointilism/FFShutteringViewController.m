@@ -32,21 +32,23 @@
 
 - (void)viewDidLoad
 {
-    int width = 10;
+    int width = 80;
     [super viewDidLoad];
     NSArray *grayscales = @[@0.3, @0.15, @0.6];
     NSTimer *timer = [NSTimer timerWithTimeInterval:0.003f target:self selector:@selector(fire:) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
     for (int i = 0; i <= self.view.bounds.size.width; i += width) {
+        for (int j = 0; j <= self.view.bounds.size.height; j+=width) {
+            
     
     UIBezierPath *path = [UIBezierPath bezierPath];
     [path moveToPoint:CGPointMake(i , 80)];
     [path addLineToPoint:CGPointMake(i , 80 )];
     [path addLineToPoint:CGPointMake(i + width, 80 + 10)];
     [path closePath];
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(i, 80, 80, 80)];
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(i, j, 80, 80)];
         view.backgroundColor = [UIColor colorWithWhite:[grayscales[i/width % 3] floatValue] alpha: [grayscales[i/width % 3] floatValue]];
-        view.alpha = 1 - [grayscales[i/width % 3] floatValue];
+        view.alpha = 1 - [grayscales[(i + j)/width % 3] floatValue];
         [self.view addSubview:view];
     CAShapeLayer *shapeLayer = [CAShapeLayer layer];
     shapeLayer.path = path.CGPath;
@@ -54,6 +56,7 @@
         shapeLayer.fillColor = [UIColor blueColor].CGColor;
     shapeLayer.lineWidth = 0;
     [self.view.layer addSublayer:shapeLayer];
+        }
     }
     // Do any additional setup after loading the view.
 }
