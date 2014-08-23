@@ -45,7 +45,7 @@
 {
     int width = 28;
     [super viewDidLoad];
-    NSArray *grayscales = @[@0.3, @0.15, @0.6];
+    NSArray *grayscales = @[@0.3, @0.15, @0.6, @0.45, @0.75, @0.0];
     
     
     
@@ -63,6 +63,10 @@
             bottomLeft.frame = CGRectMake(i, j + topLeft.frame.size.height, bottomLeft.frame.size.width, bottomLeft.frame.size.height);
             UIImageView *bottomRight = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bottomRight"]];
             bottomRight.frame = CGRectMake(i + bottomLeft.frame.size.width, j + topLeft.frame.size.height, bottomRight.frame.size.width, bottomRight.frame.size.height);
+            topLeft.alpha = [grayscales[arc4random() % grayscales.count] floatValue];
+            topRight.alpha = [grayscales[arc4random() % grayscales.count] floatValue];
+            bottomLeft.alpha = [grayscales[arc4random() % grayscales.count] floatValue];
+            bottomRight.alpha = [grayscales[arc4random() % grayscales.count] floatValue];
             [self.view addSubview:topLeft];
             [self.view addSubview:topRight];
             [self.view addSubview:bottomLeft];
