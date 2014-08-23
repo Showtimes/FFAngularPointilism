@@ -52,17 +52,20 @@
     
     NSTimer *timer = [NSTimer timerWithTimeInterval:0.003f target:self selector:@selector(fire:) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
-    for (int i = 0; i <= self.view.bounds.size.width; i += width) {
-        for (int j = 0; j <= self.view.bounds.size.height; j+=width) {
+    for (int i = 0; i <= self.view.bounds.size.width; i += width/2.0) {
+        for (int j = 0; j <= self.view.bounds.size.height; j+=width/2.0) {
             
             UIImageView *topLeft = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"topLeft"]];
-            topLeft.frame = CGRectMake(i, j, topLeft.frame.size.width, topLeft.frame.size.height);
             UIImageView *topRight = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"topRight"]];
-            topRight.frame = CGRectMake(i + topLeft.frame.size.width, j, topRight.frame.size.width, topRight.frame.size.height);
             UIImageView *bottomLeft = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bottomLeft"]];
-            bottomLeft.frame = CGRectMake(i, j + topLeft.frame.size.height, bottomLeft.frame.size.width, bottomLeft.frame.size.height);
             UIImageView *bottomRight = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bottomRight"]];
-            bottomRight.frame = CGRectMake(i + bottomLeft.frame.size.width, j + topLeft.frame.size.height, bottomRight.frame.size.width, bottomRight.frame.size.height);
+
+
+
+            bottomRight.frame = CGRectMake(i, j, topLeft.frame.size.width, topLeft.frame.size.height);
+            bottomLeft.frame = CGRectMake(i + topLeft.frame.size.width, j, topRight.frame.size.width, topRight.frame.size.height);
+            topLeft.frame = CGRectMake(i, j + topLeft.frame.size.height, bottomLeft.frame.size.width, bottomLeft.frame.size.height);
+            topLeft.frame = CGRectMake(i + bottomLeft.frame.size.width, j + topLeft.frame.size.height, bottomRight.frame.size.width, bottomRight.frame.size.height);
             topLeft.alpha = [grayscales[arc4random() % grayscales.count] floatValue];
             topRight.alpha = [grayscales[arc4random() % grayscales.count] floatValue];
             bottomLeft.alpha = [grayscales[arc4random() % grayscales.count] floatValue];
@@ -89,7 +92,7 @@
 }
 - (void)fire:(NSTimer *)timer{
     for (UIView *subview in self.view.subviews) {
-        subview.alpha += subview.tag == 1 ? -0.001f : 0.001f;
+        subview.alpha += subview.tag == 1 ? -0.01f : 0.01f;
         if (subview.alpha >= 0.8f) {
             subview.tag = 1;
         }
