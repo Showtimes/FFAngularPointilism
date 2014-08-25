@@ -50,10 +50,13 @@
     
     
     
-    NSTimer *timer = [NSTimer timerWithTimeInterval:0.006f target:self selector:@selector(fire:) userInfo:nil repeats:YES];
+    NSTimer *timer = [NSTimer timerWithTimeInterval:0.02f target:self selector:@selector(fire:) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
     for (int i = 0; i <= self.view.bounds.size.width; i += width) {
         for (int j = 0; j <= self.view.bounds.size.height; j+=width) {
+            if (j > 100 && j < self.view.bounds.size.height - 100) {
+                continue;
+            }
             
             UIImageView *topLeft = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"topLeft"]];
             UIImageView *topRight = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"topRight"]];
@@ -85,15 +88,31 @@
             bottomRight.alpha = [grayscales[arc4random() % grayscales.count] floatValue];
             bottomRight2.alpha =[grayscales[arc4random() % grayscales.count] floatValue];
             
-            
-            [self.view addSubview:topLeft];
-            [self.view addSubview:topLeft2];
-            [self.view addSubview:topRight];
-            [self.view addSubview:topRight2];
-            [self.view addSubview:bottomLeft];
-            [self.view addSubview:bottomLeft2];
-            [self.view addSubview:bottomRight];
-            [self.view addSubview:bottomRight2];
+            int random = arc4random();
+            if (random % 3 != 0) {
+                [self.view addSubview:topLeft];
+            }
+            if (random % 4 != 0){
+                [self.view addSubview:topLeft2];
+            }
+            if (random % 5 != 0){
+                [self.view addSubview:topRight];
+            }
+            if (random % 6 != 0) {
+                [self.view addSubview:topRight2];
+            }
+            if (random % 2 != 0) {
+                [self.view addSubview:bottomLeft];
+            }
+            if (random % 8 != 0) {
+                [self.view addSubview:bottomLeft2];
+            }
+            if (random % 9 != 0) {
+                [self.view addSubview:bottomRight];
+            }
+            if (random % 7 != 0) {
+                [self.view addSubview:bottomRight2];
+            }
             
         }
     }
