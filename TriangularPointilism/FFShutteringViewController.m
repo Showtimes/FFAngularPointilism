@@ -11,6 +11,8 @@
 @interface FFShutteringViewController ()
 @property (strong, nonatomic) NSMutableArray *arrayOfTriangleLayers;
 @property (strong, nonatomic) NSArray *images;
+
+@property (nonatomic) BOOL shouldInvalidateTimer;
 @end
 
 @implementation FFShutteringViewController
@@ -50,8 +52,7 @@
     
     
     
-    NSTimer *timer = [NSTimer timerWithTimeInterval:0.02f target:self selector:@selector(fire:) userInfo:nil repeats:YES];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
+    
     for (int i = 0; i <= self.view.bounds.size.width; i += width) {
         for (int j = 0; j <= self.view.bounds.size.height; j+=width) {
             if (j > 100 && j < self.view.bounds.size.height - 100) {
@@ -104,7 +105,7 @@
         }
     }
     
-    [self.view addSubview:[self sectionalView]];
+   // [self.view addSubview:[self sectionalView]];
     // Do any additional setup after loading the view.
 }
 
@@ -117,6 +118,10 @@
     return sectionalView;
 }
 - (void)fire:(NSTimer *)timer{
+    if (self.shouldInvalidateTimer) {
+        [timer invalidate];
+        self.shouldInvalidateTimer = NO;
+    }
     for (UIView *subview in self.view.subviews) {
         
         
@@ -143,7 +148,17 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    NSTimer *timer = [NSTimer timerWithTimeInterval:0.0005f target:self selector:@selector(fire:) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
+    [self invalidateTimerAfterNumberOfSeconds:5];
+}
 
+- (void)invalidateTimerAfterNumberOfSeconds:(NSTimeInterval)seconds{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(seconds * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        self.shouldInvalidateTimer = YES;
+    });
+}
                       
 
 /*
