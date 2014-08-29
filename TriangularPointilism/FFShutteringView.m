@@ -1,23 +1,19 @@
 //
-//  FFShutteringViewController.m
+//  FFShutteringView.m
 //  TriangularPointilism
 //
-//  Created by James Graham on 8/20/14.
+//  Created by James Graham on 8/29/14.
 //  Copyright (c) 2014 FindandForm. All rights reserved.
 //
 
-#import "FFShutteringViewController.h"
 #import "FFShutteringView.h"
-
-@interface FFShutteringViewController ()
+@interface FFShutteringView()
 @property (strong, nonatomic) NSMutableArray *arrayOfTriangleLayers;
 @property (strong, nonatomic) NSArray *images;
 
 @property (nonatomic) BOOL shouldInvalidateTimer;
-@property (weak, nonatomic) IBOutlet FFShutteringView *shutteringView;
 @end
-
-@implementation FFShutteringViewController
+@implementation FFShutteringView
 
 - (NSArray *)images{
     if (_images) {
@@ -36,29 +32,12 @@
     return _arrayOfTriangleLayers;
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)viewDidLoad
-{
-    /*
+- (void)awakeFromNib{
     int width = 28;
-    [super viewDidLoad];
     NSArray *grayscales = @[@0.3, @0.15, @0.6, @0.45, @0.75, @0.0];
-    
-    
-    
-    
-    
-    for (int i = 0; i <= self.view.bounds.size.width; i += width) {
-        for (int j = 0; j <= self.view.bounds.size.height; j+=width) {
-            if (j > 100 && j < self.view.bounds.size.height - 100) {
+    for (int i = 0; i <= self.bounds.size.width; i += width) {
+        for (int j = 0; j <= self.bounds.size.height; j+=width) {
+            if (j > 100 && j < self.bounds.size.height - 100) {
                 continue;
             }
             
@@ -71,14 +50,14 @@
             UIImageView *topRight2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"topRight"]];
             UIImageView *bottomLeft2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bottomLeft"]];
             UIImageView *bottomRight2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bottomRight"]];
-
-           
-
+            
+            
+            
             bottomRight.frame = CGRectMake(i, j, topLeft.frame.size.width, topLeft.frame.size.height);
             topLeft2.frame    = bottomRight.frame;
             bottomLeft.frame = CGRectMake(i + topLeft.frame.size.width, j, topRight.frame.size.width, topRight.frame.size.height);
             topRight2.frame = bottomLeft.frame;
-
+            
             topRight.frame = CGRectMake(i, j + topLeft.frame.size.height, bottomLeft.frame.size.width, bottomLeft.frame.size.height);
             bottomLeft2.frame = topRight.frame;
             topLeft.frame = CGRectMake(i + bottomLeft.frame.size.width, j + topLeft.frame.size.height, bottomRight.frame.size.width, bottomRight.frame.size.height);
@@ -93,40 +72,25 @@
             bottomRight2.alpha =[grayscales[arc4random() % grayscales.count] floatValue];
             
             
-                [self.view addSubview:topLeft];
-                [self.view addSubview:topLeft2];
-                [self.view addSubview:topRight];
-                [self.view addSubview:topRight2];
-                [self.view addSubview:bottomLeft];
-                [self.view addSubview:bottomLeft2];
-                [self.view addSubview:bottomRight];
-                [self.view addSubview:bottomRight2];
-            
-             
-            
-
+            [self addSubview:topLeft];
+            [self addSubview:topLeft2];
+            [self addSubview:topRight];
+            [self addSubview:topRight2];
+            [self addSubview:bottomLeft];
+            [self addSubview:bottomLeft2];
+            [self addSubview:bottomRight];
+            [self addSubview:bottomRight2];
         }
     }
-     */
-    
-   // [self.view addSubview:[self sectionalView]];
-    // Do any additional setup after loading the view.
 }
 
-- (UIView *)sectionalView{
-    UIView *sectionalView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-    UIImageView *first = [[UIImageView alloc] initWithImage:self.images[0]];
-    UIImageView *second = [[UIImageView alloc] initWithImage:self.images[3]];
-    [sectionalView addSubview:first];
-    [sectionalView addSubview:second];
-    return sectionalView;
-}
+
 - (void)fire:(NSTimer *)timer{
     if (self.shouldInvalidateTimer) {
         [timer invalidate];
         self.shouldInvalidateTimer = NO;
     }
-    for (UIView *subview in self.view.subviews) {
+    for (UIView *subview in self.subviews) {
         
         
         if (subview.tag > 1 ){
@@ -146,29 +110,14 @@
         }
     }
 }
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    NSTimer *timer = [NSTimer timerWithTimeInterval:0.0005f target:self selector:@selector(fire:) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
+    [self invalidateTimerAfterNumberOfSeconds:1];
 }
-
-
 - (void)invalidateTimerAfterNumberOfSeconds:(NSTimeInterval)seconds{
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(seconds * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         self.shouldInvalidateTimer = YES;
     });
 }
-                      
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 @end

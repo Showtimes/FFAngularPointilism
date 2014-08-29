@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A39EE8119B139E200464C0D /* FFShutteringView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A39EE8019B139E200464C0D /* FFShutteringView.m */; };
 		1A6377B819A5089F00223469 /* FFShutteringViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A6377B719A5089F00223469 /* FFShutteringViewController.m */; };
 		1A9D6BE6199BF7F6000AC1F5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A9D6BE5199BF7F6000AC1F5 /* Foundation.framework */; };
 		1A9D6BE8199BF7F6000AC1F5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A9D6BE7199BF7F6000AC1F5 /* CoreGraphics.framework */; };
@@ -37,6 +38,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1A39EE7F19B139E200464C0D /* FFShutteringView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFShutteringView.h; sourceTree = "<group>"; };
+		1A39EE8019B139E200464C0D /* FFShutteringView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FFShutteringView.m; sourceTree = "<group>"; };
 		1A6377B619A5089F00223469 /* FFShutteringViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFShutteringViewController.h; sourceTree = "<group>"; };
 		1A6377B719A5089F00223469 /* FFShutteringViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FFShutteringViewController.m; sourceTree = "<group>"; };
 		1A9D6BE2199BF7F6000AC1F5 /* TriangularPointilism.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TriangularPointilism.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -133,6 +136,8 @@
 				1AC875A8199EE830006C7BA9 /* TPDoubleTriangleView.m */,
 				1A6377B619A5089F00223469 /* FFShutteringViewController.h */,
 				1A6377B719A5089F00223469 /* FFShutteringViewController.m */,
+				1A39EE7F19B139E200464C0D /* FFShutteringView.h */,
+				1A39EE8019B139E200464C0D /* FFShutteringView.m */,
 			);
 			path = TriangularPointilism;
 			sourceTree = "<group>";
@@ -265,6 +270,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1A9D6BFC199BF7F6000AC1F5 /* TPViewController.m in Sources */,
+				1A39EE8119B139E200464C0D /* FFShutteringView.m in Sources */,
 				1AC875A9199EE830006C7BA9 /* TPDoubleTriangleView.m in Sources */,
 				1A9D6BF6199BF7F6000AC1F5 /* TPAppDelegate.m in Sources */,
 				1A9D6BF2199BF7F6000AC1F5 /* main.m in Sources */,
