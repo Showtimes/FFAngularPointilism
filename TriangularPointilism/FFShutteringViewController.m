@@ -55,7 +55,7 @@
     for (int i = 0; i <= self.view.bounds.size.width; i += width) {
         for (int j = 0; j <= self.view.bounds.size.height; j+=width) {
             if (j > 100 && j < self.view.bounds.size.height - 100) {
-                continue;
+           //     continue;
             }
             
             UIImageView *topLeft = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"topLeft"]];
