@@ -30,9 +30,6 @@
 }
 
 - (NSTimeInterval)artificialLifeSpan{
-    if (_artificialLifeSpan == 0) {
-        _artificialLifeSpan = MAXFLOAT;
-    }
     return _artificialLifeSpan;
 }
 
@@ -144,6 +141,9 @@
     [self invalidateTimerAfterNumberOfSeconds:self.artificialLifeSpan];
 }
 - (void)invalidateTimerAfterNumberOfSeconds:(NSTimeInterval)seconds{
+    if (seconds == 0) {
+        return;
+    }
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(seconds * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         self.shouldInvalidateTimer = YES;
     });

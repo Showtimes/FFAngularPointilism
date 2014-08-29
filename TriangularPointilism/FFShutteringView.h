@@ -21,8 +21,8 @@
 @property (nonatomic) CGFloat frameRate;
 
 /**
- *  The amount of time until the class automatically halts the life of each triangular cell. For infinite life, set to MAXFLOAT.
- *  Default is MAXFloat;
+ *  The amount of time until the class automatically halts the life of each triangular cell. For infinite life, set to 0.
+ *  Default is 0;
  */
 @property (nonatomic) NSTimeInterval artificialLifeSpan;
 /**

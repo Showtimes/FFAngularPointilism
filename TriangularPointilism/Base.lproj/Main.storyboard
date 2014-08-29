@@ -24,6 +24,9 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="shutteringView" destination="o34-5a-Gqk" id="2fy-Nn-zgY"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eyT-G0-NaT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
