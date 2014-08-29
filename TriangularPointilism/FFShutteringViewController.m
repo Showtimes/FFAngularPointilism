@@ -88,32 +88,19 @@
             bottomRight.alpha = [grayscales[arc4random() % grayscales.count] floatValue];
             bottomRight2.alpha =[grayscales[arc4random() % grayscales.count] floatValue];
             
-            int random = arc4random();
-            if (random % 3 != 0) {
-                [self.view addSubview:topLeft];
-            }
-            if (random % 4 != 0){
-                [self.view addSubview:topLeft2];
-            }
-            if (random % 5 != 0){
-                [self.view addSubview:topRight];
-            }
-            if (random % 6 != 0) {
-                [self.view addSubview:topRight2];
-            }
-            if (random % 2 != 0) {
-                [self.view addSubview:bottomLeft];
-            }
-            if (random % 8 != 0) {
-                [self.view addSubview:bottomLeft2];
-            }
-            if (random % 9 != 0) {
-                [self.view addSubview:bottomRight];
-            }
-            if (random % 7 != 0) {
-                [self.view addSubview:bottomRight2];
-            }
             
+                [self.view addSubview:topLeft];
+                [self.view addSubview:topLeft2];
+                [self.view addSubview:topRight];
+                [self.view addSubview:topRight2];
+                [self.view addSubview:bottomLeft];
+                [self.view addSubview:bottomLeft2];
+                [self.view addSubview:bottomRight];
+                [self.view addSubview:bottomRight2];
+            
+             
+            
+
         }
     }
     
@@ -131,12 +118,22 @@
 }
 - (void)fire:(NSTimer *)timer{
     for (UIView *subview in self.view.subviews) {
-        subview.alpha += subview.tag == 1 ? -0.01f : 0.01f;
+        
+        
+        if (subview.tag > 1 ){
+            subview.tag--;
+        }
+        
+        if (subview.tag == 1 || subview.tag == 0) {
+            subview.alpha += subview.tag == 0 ? -0.01f : 0.01f;
+        }
+        
         if (subview.alpha >= 0.8f) {
-            subview.tag = 1;
+            subview.tag = 0;
         }
         if (subview.alpha <= 0.0f) {
-            subview.tag = 0;
+            //defines maximum possible amount of time a triangle may be dead (alpha 0) before coming back to life
+            subview.tag = (arc4random() % 400) + 1;
         }
     }
 }
