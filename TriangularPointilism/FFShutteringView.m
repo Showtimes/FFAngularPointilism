@@ -35,7 +35,7 @@
 
 - (NSUInteger)maximumAllowedDeathTicks{
     if (_maximumAllowedDeathTicks == 0) {
-        _maximumAllowedDeathTicks = 400;
+        _maximumAllowedDeathTicks = 200;
     }
     return _maximumAllowedDeathTicks;
 }
