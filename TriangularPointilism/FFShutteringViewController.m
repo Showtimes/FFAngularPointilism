@@ -10,9 +10,12 @@
 #import "FFShutteringView.h"
 
 @interface FFShutteringViewController ()
+@property (weak, nonatomic) IBOutlet FFShutteringView *shutteringView;
 
 @end
 
 @implementation FFShutteringViewController
-
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    [self.shutteringView sparkLife];
+}
 @end

@@ -135,7 +135,8 @@
         }
     }
 }
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+
+- (void)sparkLife{
     NSTimer *timer = [NSTimer timerWithTimeInterval:1.0f/self.frameRate target:self selector:@selector(fire:) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
     [self invalidateTimerAfterNumberOfSeconds:self.artificialLifeSpan];

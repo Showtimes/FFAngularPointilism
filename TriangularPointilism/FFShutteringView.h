@@ -9,6 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface FFShutteringView : UIView
+/**
+ *  Start the automata
+ */
+- (void)sparkLife;
 
 /**
  *  The amount of shuttering to show from the bottom up, and top down. A value of half the height will show all shuttering. A value of 0 - (2 * triangular height) will show no shuttering.
