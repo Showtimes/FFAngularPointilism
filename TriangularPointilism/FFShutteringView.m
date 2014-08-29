@@ -15,6 +15,34 @@
 @end
 @implementation FFShutteringView
 
+- (NSInteger)topBottomMarginMaskLength{
+    if (_topBottomMarginMaskLength == 0) {
+        _topBottomMarginMaskLength = 100;
+    }
+    return _topBottomMarginMaskLength;
+}
+
+- (CGFloat)frameRate{
+    if (_frameRate == 0) {
+        _frameRate = 30.0f;
+    }
+    return _frameRate;
+}
+
+- (NSTimeInterval)artificialLifeSpan{
+    if (_artificialLifeSpan == 0) {
+        _artificialLifeSpan = MAXFLOAT;
+    }
+    return _artificialLifeSpan;
+}
+
+- (NSUInteger)maximumAllowedDeathTicks{
+    if (_maximumAllowedDeathTicks == 0) {
+        _maximumAllowedDeathTicks = 400;
+    }
+    return _maximumAllowedDeathTicks;
+}
+
 - (NSArray *)images{
     if (_images) {
         _images = @[[UIImage imageNamed:@"topRight"],
@@ -37,7 +65,7 @@
     NSArray *grayscales = @[@0.3, @0.15, @0.6, @0.45, @0.75, @0.0];
     for (int i = 0; i <= self.bounds.size.width; i += width) {
         for (int j = 0; j <= self.bounds.size.height; j+=width) {
-            if (j > 100 && j < self.bounds.size.height - 100) {
+            if (j > self.topBottomMarginMaskLength && j < self.bounds.size.height - self.topBottomMarginMaskLength) {
                 continue;
             }
             
@@ -106,14 +134,14 @@
         }
         if (subview.alpha <= 0.0f) {
             //defines maximum possible amount of time a triangle may be dead (alpha 0) before coming back to life
-            subview.tag = (arc4random() % 400) + 1;
+            subview.tag = (arc4random() % self.maximumAllowedDeathTicks) + 1;
         }
     }
 }
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-    NSTimer *timer = [NSTimer timerWithTimeInterval:0.0005f target:self selector:@selector(fire:) userInfo:nil repeats:YES];
+    NSTimer *timer = [NSTimer timerWithTimeInterval:1.0f/self.frameRate target:self selector:@selector(fire:) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
-    [self invalidateTimerAfterNumberOfSeconds:1];
+    [self invalidateTimerAfterNumberOfSeconds:self.artificialLifeSpan];
 }
 - (void)invalidateTimerAfterNumberOfSeconds:(NSTimeInterval)seconds{
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(seconds * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

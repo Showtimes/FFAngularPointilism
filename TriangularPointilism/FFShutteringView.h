@@ -10,4 +10,23 @@
 
 @interface FFShutteringView : UIView
 
+/**
+ *  The amount of shuttering to show from the bottom up, and top down. A value of half the height will show all shuttering. A value of 0 - (2 * triangular height) will show no shuttering.
+ */
+@property (nonatomic) NSInteger topBottomMarginMaskLength;
+
+/**
+ *  The number of frames that will be called each second.
+ */
+@property (nonatomic) CGFloat frameRate;
+
+/**
+ *  The amount of time until the class automatically halts the life of each triangular cell. For infinite life, set to MAXFLOAT.
+ *  Default is MAXFloat;
+ */
+@property (nonatomic) NSTimeInterval artificialLifeSpan;
+/**
+ *  This translates to triangle cell density. The higher this number, the less dense the cells. This figure represents the maximum amount of time a cell may exist with 0 alpha. 
+ */
+@property (nonatomic) NSUInteger maximumAllowedDeathTicks;
 @end
