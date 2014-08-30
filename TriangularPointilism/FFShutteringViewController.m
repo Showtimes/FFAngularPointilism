@@ -11,6 +11,7 @@
 
 @interface FFShutteringViewController ()
 @property (weak, nonatomic) IBOutlet FFShutteringView *shutteringView;
+@property (weak, nonatomic) IBOutlet UIButton *buttonGod;
 
 - (IBAction)sliderValueChanged:(UISlider *)sender;
 @end
@@ -30,5 +31,6 @@
 }
 - (IBAction)createLifeButtonReleased:(id)sender {
     [self.shutteringView sparkLife];
+    self.buttonGod.enabled = NO;
 }
 @end
