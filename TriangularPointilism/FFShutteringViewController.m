@@ -25,6 +25,9 @@
 - (IBAction)sliderValueChanged:(UISlider *)sender {
     self.shutteringView.maximumAllowedDeathTicks = 1.0/(sender.value) * 400;
 }
+- (IBAction)frameRateSliderValueChanged:(UISlider *)sender {
+    self.shutteringView.frameRate = sender.value * 30;
+}
 - (IBAction)createLifeButtonReleased:(id)sender {
     [self.shutteringView sparkLife];
 }

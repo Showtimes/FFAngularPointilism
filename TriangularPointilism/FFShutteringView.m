@@ -22,11 +22,18 @@
     return _topBottomMarginMaskLength;
 }
 
+@synthesize frameRate = _frameRate;
 - (CGFloat)frameRate{
     if (_frameRate == 0) {
         _frameRate = 30.0f;
     }
     return _frameRate;
+}
+
+- (void)setFrameRate:(CGFloat)frameRate{
+    _frameRate = frameRate;
+    self.shouldInvalidateTimer = YES;
+    [self sparkLife];
 }
 
 - (NSTimeInterval)artificialLifeSpan{
