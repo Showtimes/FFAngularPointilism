@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="MSU-KM-3mu">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="cmM-aO-mh5">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
-        <!--Shuttering View Controller-->
+        <!--Shuttering View Controller - Shuttering-->
         <scene sceneID="6B2-5S-TpR">
             <objects>
                 <viewController id="MSU-KM-3mu" customClass="FFShutteringViewController" sceneMemberID="viewController">
@@ -72,6 +72,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Shuttering" id="Sae-rr-lh7"/>
                     <connections>
                         <outlet property="buttonGod" destination="Ftr-E6-lds" id="W11-mO-XGS"/>
                         <outlet property="shutteringView" destination="o34-5a-Gqk" id="2fy-Nn-zgY"/>
@@ -79,9 +80,28 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eyT-G0-NaT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="26" y="-81"/>
+            <point key="canvasLocation" x="202" y="371"/>
         </scene>
-        <!--View Controller-->
+        <!--Tab Bar Controller-->
+        <scene sceneID="Oyn-jF-vYm">
+            <objects>
+                <tabBarController definesPresentationContext="YES" id="cmM-aO-mh5" sceneMemberID="viewController">
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="WRL-mz-xLl">
+                        <rect key="frame" x="129" y="330" width="163" height="49"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="vXZ-lx-hvc" kind="relationship" relationship="viewControllers" id="rEb-D5-OqF"/>
+                        <segue destination="MSU-KM-3mu" kind="relationship" relationship="viewControllers" id="U9i-0a-PnF"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Guv-0z-kY9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-378" y="-93"/>
+        </scene>
+        <!--View Controller - Mosaic-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
                 <viewController id="vXZ-lx-hvc" customClass="TPViewController" sceneMemberID="viewController">
@@ -146,6 +166,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Mosaic" id="kz3-94-kWH"/>
                     <connections>
                         <outlet property="imageView" destination="0Rb-C8-qiu" id="g0a-qR-rsh"/>
                         <outlet property="label" destination="ojH-Yi-JeV" id="SIM-BD-qzK"/>
@@ -157,7 +178,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="386" y="-81"/>
+            <point key="canvasLocation" x="186" y="-449"/>
         </scene>
     </scenes>
     <resources>
