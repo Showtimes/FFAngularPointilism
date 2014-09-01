@@ -24,7 +24,7 @@
 		1A9D6C0F199BF7F6000AC1F5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1A9D6C0D199BF7F6000AC1F5 /* InfoPlist.strings */; };
 		1A9D6C11199BF7F6000AC1F5 /* TriangularPointilismTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A9D6C10199BF7F6000AC1F5 /* TriangularPointilismTests.m */; };
 		1AC875A3199E7ADF006C7BA9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC875A2199E7ADF006C7BA9 /* QuartzCore.framework */; };
-		1AC875A9199EE830006C7BA9 /* TPDoubleTriangleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC875A8199EE830006C7BA9 /* TPDoubleTriangleView.m */; };
+		1AC875A9199EE830006C7BA9 /* FFDoubleTriangleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC875A8199EE830006C7BA9 /* FFDoubleTriangleView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,8 +62,8 @@
 		1A9D6C0E199BF7F6000AC1F5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1A9D6C10199BF7F6000AC1F5 /* TriangularPointilismTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TriangularPointilismTests.m; sourceTree = "<group>"; };
 		1AC875A2199E7ADF006C7BA9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		1AC875A7199EE830006C7BA9 /* TPDoubleTriangleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPDoubleTriangleView.h; sourceTree = "<group>"; };
-		1AC875A8199EE830006C7BA9 /* TPDoubleTriangleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPDoubleTriangleView.m; sourceTree = "<group>"; };
+		1AC875A7199EE830006C7BA9 /* FFDoubleTriangleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFDoubleTriangleView.h; sourceTree = "<group>"; };
+		1AC875A8199EE830006C7BA9 /* FFDoubleTriangleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FFDoubleTriangleView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,8 +132,8 @@
 				1A9D6BFB199BF7F6000AC1F5 /* TPViewController.m */,
 				1A9D6BFD199BF7F6000AC1F5 /* Images.xcassets */,
 				1A9D6BEC199BF7F6000AC1F5 /* Supporting Files */,
-				1AC875A7199EE830006C7BA9 /* TPDoubleTriangleView.h */,
-				1AC875A8199EE830006C7BA9 /* TPDoubleTriangleView.m */,
+				1AC875A7199EE830006C7BA9 /* FFDoubleTriangleView.h */,
+				1AC875A8199EE830006C7BA9 /* FFDoubleTriangleView.m */,
 				1A6377B619A5089F00223469 /* FFShutteringViewController.h */,
 				1A6377B719A5089F00223469 /* FFShutteringViewController.m */,
 				1A39EE7F19B139E200464C0D /* FFShutteringView.h */,
@@ -271,7 +271,7 @@
 			files = (
 				1A9D6BFC199BF7F6000AC1F5 /* TPViewController.m in Sources */,
 				1A39EE8119B139E200464C0D /* FFShutteringView.m in Sources */,
-				1AC875A9199EE830006C7BA9 /* TPDoubleTriangleView.m in Sources */,
+				1AC875A9199EE830006C7BA9 /* FFDoubleTriangleView.m in Sources */,
 				1A9D6BF6199BF7F6000AC1F5 /* TPAppDelegate.m in Sources */,
 				1A9D6BF2199BF7F6000AC1F5 /* main.m in Sources */,
 				1A6377B819A5089F00223469 /* FFShutteringViewController.m in Sources */,

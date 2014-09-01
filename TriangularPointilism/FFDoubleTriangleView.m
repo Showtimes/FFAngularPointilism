@@ -6,12 +6,12 @@
 //  Copyright (c) 2014 FindandForm. All rights reserved.
 //
 
-#import "TPDoubleTriangleView.h"
-@interface TPDoubleTriangleView()
+#import "FFDoubleTriangleView.h"
+@interface FFDoubleTriangleView()
 @property (strong, nonatomic) NSMutableArray *array;
 @property (strong, nonatomic) NSMutableArray *array2;
 @end
-@implementation TPDoubleTriangleView{
+@implementation FFDoubleTriangleView{
     NSUInteger row;
     NSUInteger pixel;
     CGFloat num;

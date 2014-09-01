@@ -9,9 +9,9 @@
 #import "TPViewController.h"
 #import <CoreGraphics/CoreGraphics.h>
 #import <QuartzCore/QuartzCore.h>
-#import "TPDoubleTriangleView.h"
+#import "FFDoubleTriangleView.h"
 @interface TPViewController ()
-@property (weak, nonatomic) IBOutlet TPDoubleTriangleView *imageView;
+@property (weak, nonatomic) IBOutlet FFDoubleTriangleView *imageView;
 @property (weak, nonatomic) IBOutlet UILabel *label;
 @property (strong, nonatomic, readwrite) UIImage *image;
 @property (weak, nonatomic) IBOutlet UISlider *slider;

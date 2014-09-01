@@ -86,7 +86,7 @@
         <scene sceneID="Oyn-jF-vYm">
             <objects>
                 <tabBarController definesPresentationContext="YES" id="cmM-aO-mh5" sceneMemberID="viewController">
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="WRL-mz-xLl">
                         <rect key="frame" x="129" y="330" width="163" height="49"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
@@ -113,7 +113,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="NonFilter" translatesAutoresizingMaskIntoConstraints="NO" id="0Rb-C8-qiu" customClass="TPDoubleTriangleView">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="NonFilter" translatesAutoresizingMaskIntoConstraints="NO" id="0Rb-C8-qiu" customClass="FFDoubleTriangleView">
                                 <rect key="frame" x="40" y="20" width="240" height="240"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>

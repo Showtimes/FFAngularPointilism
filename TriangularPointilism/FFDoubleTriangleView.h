@@ -10,7 +10,7 @@
 /**
  * ## This subclass currently requires nib instantiation ##
  */
-@interface TPDoubleTriangleView : UIImageView
+@interface FFDoubleTriangleView : UIImageView
 
 
 //Non-Animation Functionality
