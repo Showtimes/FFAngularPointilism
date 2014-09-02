@@ -140,7 +140,8 @@
             //defines maximum possible amount of time a triangle may be dead (alpha 0) before coming back to life
             u_int32_t intRandom = arc4random();
             if (subview.frame.origin.y > self.topBottomMarginMaskLength/2.0f && subview.frame.origin.y < self.frame.size.height - self.topBottomMarginMaskLength/2.0f) {
-                subview.tag = (intRandom % (self.maximumAllowedDeathTicks * 20)) + 1;
+                //Hard coded layering. Middle halves closer to center experience 5x longer death than their further half counterparts
+                subview.tag = (intRandom % (self.maximumAllowedDeathTicks * 5)) + 1;
             }
             else {
                 subview.tag = (intRandom % self.maximumAllowedDeathTicks) + 1;
