@@ -65,7 +65,7 @@
 }
 
 - (void)awakeFromNib{
-    int width = 28;
+    int width = 20;
     NSArray *grayscales = @[@0.3, @0.15, @0.6, @0.45, @0.75, @0.0];
     for (int i = 0; i <= self.bounds.size.width; i += width) {
         for (int j = 0; j <= self.bounds.size.height; j+=width) {
