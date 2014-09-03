@@ -8,7 +8,6 @@
 
 #import "FFShutteringView.h"
 @interface FFShutteringView()
-@property (strong, nonatomic) NSMutableArray *arrayOfTriangleLayers;
 @property (strong, nonatomic) NSArray *images;
 
 @property (nonatomic) BOOL shouldInvalidateTimer;
@@ -57,12 +56,6 @@
     return _images;
 }
 
-- (NSMutableArray *)arrayOfTriangleLayers{
-    if (!_arrayOfTriangleLayers) {
-        _arrayOfTriangleLayers = [NSMutableArray array];
-    }
-    return _arrayOfTriangleLayers;
-}
 
 - (void)awakeFromNib{
     int width = 32;
