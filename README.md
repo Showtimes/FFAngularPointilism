@@ -19,5 +19,5 @@ Note: Currently this library only supports XIB instantiation and has no exposed 
 
 
 ##### 2. Animatable Shuttering & Undulation
-
+Currently, in order to use this feature, one must copy the 4 triangles for the xcassets folder into their working directory with identical names. This will change in future updates.
 //input gif here
