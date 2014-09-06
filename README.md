@@ -1,5 +1,6 @@
 Angular Pointilism
 ==========
+_Triangles for iOS!_
 
 You may dive right in with the included [demo](https://github.com/FindForm/FFAngularPointilism/archive/master.zip); simply open the .xcodeproj and run on a 4" display
 
@@ -17,7 +18,9 @@ Note: Currently this library only supports XIB instantiation and has no exposed 
 ![static]
 (http://i.imgur.com/RVNZYe6.png)
 
-
+<br />
 ##### 2. Animatable Shuttering & Undulation
 Currently, in order to use this feature, one must copy the 4 triangles for the xcassets folder into their working directory with identical names. This will change in future updates.
-//input gif here
+
+Resolution of below gif may be terrible
+![mov](http://giant.gfycat.com/LightheartedCleverEyra.gif)
