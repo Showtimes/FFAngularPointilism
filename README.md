@@ -2,6 +2,8 @@ Angular Pointilism
 ==========
 _Triangles for iOS!_
 
+In summary, this library is build from two pieces. The first piece is the triangular-mosaic image blur which can be applied to any UIImageView as an alternative (and prettier) to UIBlurEffect. The second piece is the shuttering triangles animation which (as far as I know) has no practical application and was built purely for aesthetic pleasure.
+
 You may dive right in with the included [demo](https://github.com/FindForm/FFAngularPointilism/archive/master.zip); simply open the .xcodeproj and run on a 4" display
 
 ### Feature set is twofold 
