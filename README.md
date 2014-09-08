@@ -53,3 +53,6 @@ The following properties are available via public API (from FFShutteringView.h):
 
 
 Note: Currently, in order to use this feature, one must copy the 4 triangles for the xcassets folder into their working directory with identical names. This will change in future updates.
+
+### Contributing
+All contributions welcome! I have no agenda as to where this project must go, what direction it is to take; make it your own!
