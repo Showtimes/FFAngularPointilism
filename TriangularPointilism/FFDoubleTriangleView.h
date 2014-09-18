@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 /**
- * ## This subclass currently requires nib instantiation ##
+ * ## This subclass supports both nib and programmatic instantiation ##
  */
 @interface FFDoubleTriangleView : UIImageView
 

@@ -25,7 +25,17 @@
     }
     return _timerTimeInterval;
 }
-- (void)awakeFromNib{
+- (instancetype)initWithImage:(UIImage *)image{
+    if (self = [super initWithImage:image]) {
+        [self loadMatrix];
+    }
+    return self;
+}
+- (void)layoutSubviews{
+    [super layoutSubviews];
+    
+}
+- (void)loadMatrix{
     num = 12;
     
     CGFloat width = self.bounds.size.width;
@@ -47,6 +57,10 @@
             
         }
     }
+
+}
+- (void)awakeFromNib{
+    [self loadMatrix];
 }
 + (UIColor *)getRGBAsFromImage:(UIImage*)image atX:(int)xx andY:(int)yy{
     /**
