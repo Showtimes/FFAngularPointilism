@@ -7,15 +7,37 @@
 //
 
 #import "FFDoubleTriangleView.h"
+#import <CoreGraphics/CoreGraphics.h>
 @interface FFDoubleTriangleView()
 @property (strong, nonatomic) NSMutableArray *array;
 @property (strong, nonatomic) NSMutableArray *array2;
+
+
+@property (strong, nonatomic) UIImage *imageGrayscale;
+
+
+@property (strong, nonatomic) NSMutableArray *ksubviews;
+@property (strong, nonatomic) NSMutableArray *ksublayers;
 @end
 @implementation FFDoubleTriangleView{
     NSUInteger row;
     NSUInteger pixel;
     CGFloat num;
     
+}
+
+- (NSMutableArray *)subviews{
+    if (!_ksubviews) {
+        _ksubviews = [NSMutableArray array];
+    }
+    return _ksubviews;
+}
+
+- (NSMutableArray *)sublayers{
+    if (!_ksublayers) {
+        _ksublayers = [NSMutableArray array];
+    }
+    return _ksublayers;
 }
 
 - (NSTimeInterval)timerTimeInterval{
@@ -61,6 +83,7 @@
 }
 - (void)awakeFromNib{
     [self loadMatrix];
+    _imageGrayscale = [self convertToGreyscale:self.image];
 }
 + (UIColor *)getRGBAsFromImage:(UIImage*)image atX:(int)xx andY:(int)yy{
     /**
@@ -108,6 +131,9 @@
     }
     if (row >= self.array.count) {
         [timer invalidate];
+
+        self.image = self.imageGrayscale;
+        [self startRemovingFromBeginning];
         return;
     }
     
@@ -116,7 +142,6 @@
 }
 
 - (void)start{
-    
     [self executeTimer];
 }
 
@@ -133,6 +158,8 @@
         row++;
     }
         if (row == self.array.count) {
+            self.image = self.imageGrayscale;
+            [self startRemovingFromBeginning];
             break;
         }
     
@@ -140,10 +167,40 @@
     }
 }
 
+- (void)startRemovingFromBeginning{
+    pixel = 0;
+    row = 0;
+    NSTimer *timer = [NSTimer timerWithTimeInterval:self.timerTimeInterval target:self selector:@selector(fireRemoval:) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
+}
+
+- (void)fireRemoval:(NSTimer *)timer{
+    pixel++;
+    if (pixel >= self.array.count) {
+        pixel = 0;
+        row++;
+    }
+    
+    //Otherwise index overflow
+    if (row * self.array.count + pixel == self.array.count * self.array.count - 1) {
+        [timer invalidate];
+        return;
+    }
+    
+    [self removeTile];
+}
+- (void)removeTile{
+    NSUInteger index = row * self.array.count + pixel;
+    CALayer *layer = self.ksublayers[index];
+    [layer removeFromSuperlayer];
+    UIView *view = self.ksubviews[index];
+    [view removeFromSuperview];
+}
 - (void)drawTile{
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(pixel * num, row * num, num, num)];
     view.backgroundColor = [self.array[row] objectAtIndex:pixel];
     [self addSubview:view];
+    [self.ksubviews addObject:view];
     UIBezierPath *path = [UIBezierPath bezierPath];
     [path moveToPoint:CGPointMake(view.frame.origin.x , view.frame.origin.y + (view.frame.size.height))];
     [path addLineToPoint:CGPointMake(view.frame.origin.x , view.frame.origin.y )];
@@ -155,6 +212,69 @@
     shapeLayer.fillColor = [((UIColor *)[self.array2[row] objectAtIndex:pixel]) CGColor];
     shapeLayer.lineWidth = 0;
     [self.layer addSublayer:shapeLayer];
+    [self.ksublayers addObject:shapeLayer];
 }
 
+
+- (UIImage *) convertToGreyscale:(UIImage *)i {
+    
+    int kRed = 1;
+    int kGreen = 2;
+    int kBlue = 4;
+    
+    int colors = kGreen | kBlue | kRed;
+    int m_width = i.size.width;
+    int m_height = i.size.height;
+    
+    uint32_t *rgbImage = (uint32_t *) malloc(m_width * m_height * sizeof(uint32_t));
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    CGContextRef context = CGBitmapContextCreate(rgbImage, m_width, m_height, 8, m_width * 4, colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaNoneSkipLast);
+    CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
+    CGContextSetShouldAntialias(context, NO);
+    CGContextDrawImage(context, CGRectMake(0, 0, m_width, m_height), [i CGImage]);
+    CGContextRelease(context);
+    CGColorSpaceRelease(colorSpace);
+    
+    // now convert to grayscale
+    uint8_t *m_imageData = (uint8_t *) malloc(m_width * m_height);
+    for(int y = 0; y < m_height; y++) {
+        for(int x = 0; x < m_width; x++) {
+            uint32_t rgbPixel=rgbImage[y*m_width+x];
+            uint32_t sum=0,count=0;
+            if (colors & kRed) {sum += (rgbPixel>>24)&255; count++;}
+            if (colors & kGreen) {sum += (rgbPixel>>16)&255; count++;}
+            if (colors & kBlue) {sum += (rgbPixel>>8)&255; count++;}
+            m_imageData[y*m_width+x]=sum/count;
+        }
+    }
+    free(rgbImage);
+    
+    // convert from a gray scale image back into a UIImage
+    uint8_t *result = (uint8_t *) calloc(m_width * m_height *sizeof(uint32_t), 1);
+    
+    // process the image back to rgb
+    for(int i = 0; i < m_height * m_width; i++) {
+        result[i*4]=0;
+        int val=m_imageData[i];
+        result[i*4+1]=val;
+        result[i*4+2]=val;
+        result[i*4+3]=val;
+    }
+    
+    // create a UIImage
+    colorSpace = CGColorSpaceCreateDeviceRGB();
+    context = CGBitmapContextCreate(result, m_width, m_height, 8, m_width * sizeof(uint32_t), colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaNoneSkipLast);
+    CGImageRef image = CGBitmapContextCreateImage(context);
+    CGContextRelease(context);
+    CGColorSpaceRelease(colorSpace);
+    UIImage *resultUIImage = [UIImage imageWithCGImage:image];
+    CGImageRelease(image);
+    
+    free(m_imageData);
+    
+    // make sure the data will be released by giving it to an autoreleased NSData
+    [NSData dataWithBytesNoCopy:result length:m_width * m_height];
+    
+    return resultUIImage;
+}
 @end
