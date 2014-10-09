@@ -18,11 +18,20 @@
 
 @property (strong, nonatomic) NSMutableArray *ksubviews;
 @property (strong, nonatomic) NSMutableArray *ksublayers;
+
+@property (strong, nonatomic) UIView *viewMask;
+
+@property (strong, nonatomic) CAShapeLayer *shapeLayer;
 @end
 @implementation FFDoubleTriangleView{
     NSUInteger row;
     NSUInteger pixel;
     CGFloat num;
+    
+    NSUInteger rowRem;
+    NSUInteger pixelRem;
+    
+    CGRect currentRect;
     
 }
 
@@ -86,7 +95,24 @@
     _imageGrayscaleView = [[UIImageView alloc] initWithImage:[self convertToGreyscale:self.image]];
     _imageGrayscaleView.frame = self.bounds;
     [self insertSubview:_imageGrayscaleView atIndex:0];
-    _imageGrayscaleView.hidden = YES;
+    
+    _viewMask = [[UIView alloc] initWithFrame:self.frame];
+    _viewMask.center = CGPointMake(_viewMask.center.x, _viewMask.center.y + _viewMask.frame.size.height/2.0);
+   // [self addSubview:_viewMask];
+   // self.imageGrayscaleView.maskView = _viewMask;
+    _shapeLayer = [[CAShapeLayer alloc] init];
+    CGRect maskRect = CGRectMake(0, 0, 50, 100);
+    CGPathRef path = CGPathCreateWithRect(maskRect, NULL);
+    _shapeLayer.path = path;
+    CGPathRelease(path);
+    self.imageGrayscaleView.layer.mask = _shapeLayer;
+}
+
+- (void)updateMaskToRect:(CGRect)rect{
+    _shapeLayer.path = CGPathCreateWithRect(rect, NULL);
+    currentRect = rect;
+    [_shapeLayer setNeedsDisplay];
+    self.imageGrayscaleView.layer.mask = _shapeLayer;
 }
 + (UIColor *)getRGBAsFromImage:(UIImage*)image atX:(int)xx andY:(int)yy{
     /**
@@ -128,21 +154,47 @@
 }
 - (void)fire:(NSTimer *)timer{
     pixel++;
+    BOOL startRawGray = row * self.array.count + pixel > 2 * self.array.count + 5;
+    if (pixel == 5 && row == 2) {
+        _imageGrayscaleView.hidden = NO;
+       // [self startRemovingFromBeginning];
+    }
     if (pixel >= self.array.count) {
         pixel = 0;
         row++;
     }
     if (row >= self.array.count) {
-        [timer invalidate];
+       // [timer invalidate];
         
         
         //[self bringSubviewToFront:_imageGrayscaleView];
-        _imageGrayscaleView.hidden = NO;
-        [self startRemovingFromBeginning];
         return;
     }
-    
-    [self drawTile];
+    else {
+        [self drawTile];
+
+    }
+    if (startRawGray) {
+        
+        
+        CGRect newRect = CGRectMake(0, 0, self.frame.size.width, (num + 2) * rowRem);
+        [self updateMaskToRect:newRect];
+        
+        
+        pixelRem++;
+        if (pixelRem >= self.array.count) {
+            pixelRem = 0;
+            rowRem++;
+        }
+        
+        //Otherwise index overflow
+        if (rowRem * self.array.count + pixelRem == self.array.count * self.array.count - 1) {
+            [timer invalidate];
+            return;
+        }
+        
+        [self removeTile];
+    }
     
 }
 
@@ -173,21 +225,19 @@
 }
 
 - (void)startRemovingFromBeginning{
-    pixel = 0;
-    row = 0;
     NSTimer *timer = [NSTimer timerWithTimeInterval:self.timerTimeInterval target:self selector:@selector(fireRemoval:) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
 }
 
 - (void)fireRemoval:(NSTimer *)timer{
-    pixel++;
-    if (pixel >= self.array.count) {
-        pixel = 0;
-        row++;
+    pixelRem++;
+    if (pixelRem >= self.array.count) {
+        pixelRem = 0;
+        rowRem++;
     }
     
     //Otherwise index overflow
-    if (row * self.array.count + pixel == self.array.count * self.array.count - 1) {
+    if (rowRem * self.array.count + pixelRem == self.array.count * self.array.count - 1) {
         [timer invalidate];
         return;
     }
@@ -195,7 +245,7 @@
     [self removeTile];
 }
 - (void)removeTile{
-    NSUInteger index = row * self.array.count + pixel;
+    NSUInteger index = rowRem * self.array.count + pixelRem;
     
         CAShapeLayer *layer = self.ksublayers[index];
         [layer removeFromSuperlayer];
@@ -284,4 +334,5 @@
     
     return resultUIImage;
 }
+
 @end
