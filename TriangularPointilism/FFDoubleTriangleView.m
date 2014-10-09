@@ -13,7 +13,7 @@
 @property (strong, nonatomic) NSMutableArray *array2;
 
 
-@property (strong, nonatomic) UIImage *imageGrayscale;
+@property (strong, nonatomic) UIImageView *imageGrayscaleView;
 
 
 @property (strong, nonatomic) NSMutableArray *ksubviews;
@@ -83,7 +83,10 @@
 }
 - (void)awakeFromNib{
     [self loadMatrix];
-    _imageGrayscale = [self convertToGreyscale:self.image];
+    _imageGrayscaleView = [[UIImageView alloc] initWithImage:[self convertToGreyscale:self.image]];
+    _imageGrayscaleView.frame = self.bounds;
+    [self insertSubview:_imageGrayscaleView atIndex:0];
+    _imageGrayscaleView.hidden = YES;
 }
 + (UIColor *)getRGBAsFromImage:(UIImage*)image atX:(int)xx andY:(int)yy{
     /**
@@ -131,8 +134,10 @@
     }
     if (row >= self.array.count) {
         [timer invalidate];
-
-        self.image = self.imageGrayscale;
+        
+        
+        //[self bringSubviewToFront:_imageGrayscaleView];
+        _imageGrayscaleView.hidden = NO;
         [self startRemovingFromBeginning];
         return;
     }
@@ -158,7 +163,7 @@
         row++;
     }
         if (row == self.array.count) {
-            self.image = self.imageGrayscale;
+            self.image = self.imageGrayscaleView.image;
             [self startRemovingFromBeginning];
             break;
         }
