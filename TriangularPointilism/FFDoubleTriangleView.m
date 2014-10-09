@@ -90,7 +90,13 @@
     CGFloat blue  = (rawData[byteIndex + 2] * 1.0) / 255.0;
     CGFloat alpha = (rawData[byteIndex + 3] * 1.0) / 255.0;
     byteIndex += 4;
-    color = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+    CGFloat gamma = 2.2f;
+    CGFloat y = red * pow(red, gamma) + green * pow(green, gamma) + blue * pow(blue, gamma);
+    CGFloat lStar = 116 * pow(y, 1.0f/3.0f);
+    lStar/=255.0f;
+    NSLog(@"lstar: %f", lStar);
+    CGFloat avg = (red + green + blue) / 3.0f;
+    color = [UIColor colorWithWhite: lStar alpha:1.0f];
     free(rawData);
     return color;
 }
