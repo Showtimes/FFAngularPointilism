@@ -26,14 +26,14 @@
     
 }
 
-- (NSMutableArray *)subviews{
+- (NSMutableArray *)ksubviews{
     if (!_ksubviews) {
         _ksubviews = [NSMutableArray array];
     }
     return _ksubviews;
 }
 
-- (NSMutableArray *)sublayers{
+- (NSMutableArray *)ksublayers{
     if (!_ksublayers) {
         _ksublayers = [NSMutableArray array];
     }
@@ -191,8 +191,10 @@
 }
 - (void)removeTile{
     NSUInteger index = row * self.array.count + pixel;
-    CALayer *layer = self.ksublayers[index];
-    [layer removeFromSuperlayer];
+    
+        CAShapeLayer *layer = self.ksublayers[index];
+        [layer removeFromSuperlayer];
+    
     UIView *view = self.ksubviews[index];
     [view removeFromSuperview];
 }
