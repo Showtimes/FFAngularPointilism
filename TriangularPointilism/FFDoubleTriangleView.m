@@ -22,6 +22,9 @@
 @property (strong, nonatomic) UIView *viewMask;
 
 @property (strong, nonatomic) CAShapeLayer *shapeLayer;
+
+@property (strong, nonatomic, readwrite) UIImage *finalbwimage;
+
 @end
 @implementation FFDoubleTriangleView{
     NSUInteger row;
@@ -93,6 +96,7 @@
 - (void)awakeFromNib{
     [self loadMatrix];
     _imageGrayscaleView = [[UIImageView alloc] initWithImage:[self convertToGreyscale:self.image]];
+    _finalbwimage = self.imageGrayscaleView.image;
     _imageGrayscaleView.frame = self.bounds;
     [self insertSubview:_imageGrayscaleView atIndex:0];
     
@@ -101,7 +105,7 @@
    // [self addSubview:_viewMask];
    // self.imageGrayscaleView.maskView = _viewMask;
     _shapeLayer = [[CAShapeLayer alloc] init];
-    CGRect maskRect = CGRectMake(0, 0, 50, 100);
+    CGRect maskRect = CGRectZero;
     CGPathRef path = CGPathCreateWithRect(maskRect, NULL);
     _shapeLayer.path = path;
     CGPathRelease(path);
