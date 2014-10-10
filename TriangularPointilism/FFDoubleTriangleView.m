@@ -154,9 +154,9 @@
 }
 - (void)fire:(NSTimer *)timer{
     pixel++;
-    BOOL startRawGray = row * self.array.count + pixel > 2 * self.array.count + 5;
+    BOOL startRawGray = row * self.array.count + pixel > 5 * self.array.count + 5;
     if (pixel == 5 && row == 2) {
-        _imageGrayscaleView.hidden = NO;
+       //s_imageGrayscaleView.hidden = NO;
        // [self startRemovingFromBeginning];
     }
     if (pixel >= self.array.count) {
@@ -168,7 +168,7 @@
         
         
         //[self bringSubviewToFront:_imageGrayscaleView];
-        return;
+      //  return;
     }
     else {
         [self drawTile];
@@ -177,7 +177,7 @@
     if (startRawGray) {
         
         
-        CGRect newRect = CGRectMake(0, 0, self.frame.size.width, (num + 2) * rowRem);
+        CGRect newRect = CGRectMake(0, 0, self.frame.size.width, (num ) * (rowRem + 2 ));
         [self updateMaskToRect:newRect];
         
         
@@ -216,7 +216,7 @@
     }
         if (row == self.array.count) {
             self.image = self.imageGrayscaleView.image;
-            [self startRemovingFromBeginning];
+           // [self startRemovingFromBeginning];
             break;
         }
     
