@@ -177,7 +177,7 @@
     if (startRawGray) {
         
         
-        CGRect newRect = CGRectMake(0, 0, self.frame.size.width, (num ) * (rowRem + 2 ));
+        CGRect newRect = CGRectMake(0, 0, self.frame.size.width, (num ) * (rowRem +1 ));
         [self updateMaskToRect:newRect];
         
         
