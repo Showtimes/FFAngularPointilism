@@ -8,7 +8,10 @@
 
 #import "FFDoubleTriangleView.h"
 #import <CoreGraphics/CoreGraphics.h>
+typedef void (^CompletionBlock)();
+
 @interface FFDoubleTriangleView()
+
 @property (strong, nonatomic) NSMutableArray *array;
 @property (strong, nonatomic) NSMutableArray *array2;
 
@@ -25,7 +28,11 @@
 
 @property (strong, nonatomic, readwrite) UIImage *finalbwimage;
 
+
+@property (nonatomic, strong) CompletionBlock completionBlock;
+
 @end
+
 @implementation FFDoubleTriangleView{
     NSUInteger row;
     NSUInteger pixel;
@@ -194,6 +201,9 @@
         //Otherwise index overflow
         if (rowRem * self.array.count + pixelRem == self.array.count * self.array.count - 1) {
             [timer invalidate];
+            if (_completionBlock) {
+                _completionBlock();
+            }
             return;
         }
         
@@ -202,8 +212,11 @@
     
 }
 
-- (void)start{
+- (void)startWithCompletion:(void (^)(void))completion{
     [self executeTimer];
+    if (completion) {
+        _completionBlock = completion;
+    }
 }
 
 - (void)executeTimer{

@@ -18,7 +18,7 @@
 
 // Animation Functionality
 @property (nonatomic) NSTimeInterval timerTimeInterval;
-- (void)start;
+- (void)startWithCompletion:(void (^)(void))completion;
 
 //the final black and white image -- only available after nib instantiation
 @property (strong, nonatomic, readonly) UIImage *finalbwimage;

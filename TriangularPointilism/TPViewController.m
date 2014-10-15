@@ -45,12 +45,11 @@
 
 - (IBAction)buttonPressed:(id)sender {
     
-    self.imageView.finalbwimage;
     
     self.slider.enabled = NO;
     self.imageView.timerTimeInterval = (1.001f - self.slider.value) / 5.0f;
     if (self.switchControl.on) {
-        [self.imageView start];
+        [self.imageView startWithCompletion:nil];
     }
     else {
         [self.imageView applyFilter];
