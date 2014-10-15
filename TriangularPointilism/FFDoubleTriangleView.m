@@ -31,6 +31,8 @@ typedef void (^CompletionBlock)();
 
 @property (nonatomic, strong) CompletionBlock completionBlock;
 
+@property (nonatomic) BOOL fromGray;
+
 @end
 
 @implementation FFDoubleTriangleView{
@@ -185,7 +187,7 @@ typedef void (^CompletionBlock)();
         [self drawTile];
 
     }
-    if (startRawGray) {
+    if (startRawGray && self.fromGray) {
         
         
         CGRect newRect = CGRectMake(0, 0, self.frame.size.width, (num ) * (rowRem +1 ));
@@ -212,7 +214,16 @@ typedef void (^CompletionBlock)();
     
 }
 
-- (void)startWithCompletion:(void (^)(void))completion{
+- (void)startBlackAndWhiteWithCompletion:(void (^)(void))completion{
+    [self executeTimer];
+    _fromGray = YES;
+    if (completion) {
+        _completionBlock = completion;
+    }
+}
+
+- (void)startMosaicFilterWithCompletion:(void (^)(void))completion{
+    _fromGray = NO;
     [self executeTimer];
     if (completion) {
         _completionBlock = completion;

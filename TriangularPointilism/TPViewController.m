@@ -49,7 +49,7 @@
     self.slider.enabled = NO;
     self.imageView.timerTimeInterval = (1.001f - self.slider.value) / 5.0f;
     if (self.switchControl.on) {
-        [self.imageView startWithCompletion:nil];
+        [self.imageView startBlackAndWhiteWithCompletion:nil];
     }
     else {
         [self.imageView applyFilter];
