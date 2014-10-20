@@ -38,4 +38,28 @@
 @property (nonatomic) NSUInteger maximumAllowedDeathTicks;
 
 @property (strong, nonatomic) NSArray *coordinateSquaresToOmit;
+
 @end
+
+
+@interface FFShutteringViewRow : NSObject
+
+@property (strong, nonatomic, readonly) NSMutableArray *items;
+
+- (instancetype)initWithItems:(NSArray *)items;
+
+@end
+
+
+@interface FFShutteringViewRowItem : NSObject
+
+@property (strong, nonatomic, readonly) UIImageView *imageViewTop;
+
+@property (strong, nonatomic, readonly) UIImageView *imageViewBottom;
+
+- (instancetype)initWithImageViewTop:(UIImageView *)imageViewTop imageViewBottom:(UIImageView *)imageViewBottom;
+
+- (NSArray *)imageViews;
+
+@end
+
