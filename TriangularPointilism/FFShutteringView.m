@@ -9,10 +9,20 @@
 #import "FFShutteringView.h"
 @interface FFShutteringView()
 @property (strong, nonatomic) NSArray *images;
-
+@property (strong, nonatomic) NSMutableArray *onscreenImages;
 @property (nonatomic) BOOL shouldInvalidateTimer;
+
 @end
-@implementation FFShutteringView
+@implementation FFShutteringView{
+    int width;
+}
+
+- (NSMutableArray *)onscreenImages{
+    if (!_onscreenImages) {
+        _onscreenImages = [NSMutableArray array];
+    }
+    return _onscreenImages;
+}
 
 - (NSInteger)topBottomMarginMaskLength{
     if (_topBottomMarginMaskLength == 0) {
@@ -58,7 +68,7 @@
 
 
 - (void)awakeFromNib{
-    int width = 32;
+    width = 32;
     NSArray *grayscales = @[@0.3, @0.15, @0.6, @0.45, @0.75, @0.0];
     for (int i = 0; i <= self.bounds.size.width; i += width) {
         for (int j = 0; j <= self.bounds.size.height; j+=width) {
@@ -96,15 +106,24 @@
             bottomRight.alpha = [grayscales[arc4random() % grayscales.count] floatValue];
             bottomRight2.alpha =[grayscales[arc4random() % grayscales.count] floatValue];
             
-            
+            NSMutableArray *subMutArray = [NSMutableArray array];
+            //one box
             [self addSubview:topLeft];
-            [self addSubview:topLeft2];
-            [self addSubview:topRight];
-            [self addSubview:topRight2];
-            [self addSubview:bottomLeft];
-            [self addSubview:bottomLeft2];
-            [self addSubview:bottomRight];
             [self addSubview:bottomRight2];
+
+            //two box
+            [self addSubview:bottomRight];
+            [self addSubview:topLeft2];
+            
+            //three box
+           /* [self addSubview:topRight];
+            [self addSubview:bottomLeft2];
+            
+            //four
+            [self addSubview:bottomLeft];
+            [self addSubview:topRight2];*/
+
+            
         }
     }
 }
@@ -147,6 +166,24 @@
     NSTimer *timer = [NSTimer timerWithTimeInterval:1.0f/self.frameRate target:self selector:@selector(fire:) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
     [self invalidateTimerAfterNumberOfSeconds:self.artificialLifeSpan];
+    
+    if (self.coordinateSquaresToOmit.count) {
+        for (NSArray *coordinate in self.coordinateSquaresToOmit) {
+            CGFloat xCoord = [((NSNumber *)[coordinate firstObject]) unsignedIntegerValue] * width + width/4.0;
+            CGFloat yCoord = [((NSNumber *)[coordinate lastObject]) unsignedIntegerValue] * width + width/2.0;
+            NSLog(@"%f, %f", xCoord, yCoord);
+            
+            UIView *underneathSubview = [self hitTest:[self convertPoint:CGPointMake(xCoord, yCoord) fromView:self.superview] withEvent:nil];
+            if (underneathSubview != self) {
+                underneathSubview.hidden = YES;
+
+            }
+            xCoord += width/2.0;
+            //underneathSubview.hidden = YES;
+            
+          
+        }
+    }
 }
 - (void)invalidateTimerAfterNumberOfSeconds:(NSTimeInterval)seconds{
     if (seconds == 0) {

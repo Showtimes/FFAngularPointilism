@@ -36,4 +36,6 @@
  *  Default is 200
  */
 @property (nonatomic) NSUInteger maximumAllowedDeathTicks;
+
+@property (strong, nonatomic) NSArray *coordinateSquaresToOmit;
 @end

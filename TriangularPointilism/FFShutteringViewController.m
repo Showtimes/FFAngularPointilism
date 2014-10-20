@@ -20,6 +20,7 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
+    self.shutteringView.coordinateSquaresToOmit = @[@[@0, @0]];
 }
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
 }
