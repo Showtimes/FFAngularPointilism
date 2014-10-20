@@ -134,7 +134,7 @@
                                                                                                                           imageViewBottom:topRight2]
                                                                                     ]];
             
-            [_onScreenImageViews addObject:row];
+            [self.onScreenImageViews addObject:row];
         }
     }
 }
