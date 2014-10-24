@@ -9,7 +9,7 @@
 #import "FFShutteringView.h"
 @interface FFShutteringView()
 @property (strong, nonatomic) NSArray *images;
-@property (strong, nonatomic) NSMutableArray *onscreenImages;
+@property (strong, nonatomic) NSMutableArray *onScreenImageViews;
 @property (nonatomic) BOOL shouldInvalidateTimer;
 
 @end
@@ -17,11 +17,11 @@
     int width;
 }
 
-- (NSMutableArray *)onscreenImages{
-    if (!_onscreenImages) {
-        _onscreenImages = [NSMutableArray array];
+- (NSMutableArray *)onScreenImageViews{
+    if (!_onScreenImageViews) {
+        _onScreenImageViews = [NSMutableArray array];
     }
-    return _onscreenImages;
+    return _onScreenImageViews;
 }
 
 - (NSInteger)topBottomMarginMaskLength{
@@ -122,41 +122,74 @@
             //four
             [self addSubview:bottomLeft];
             [self addSubview:topRight2];*/
-
             
+            FFShutteringViewRow *row = [[FFShutteringViewRow alloc] initWithItems:@[
+                                                                                    [[FFShutteringViewRowItem alloc] initWithImageViewTop:topLeft
+                                                                                                                          imageViewBottom:bottomRight2],
+                                                                                    [[FFShutteringViewRowItem alloc] initWithImageViewTop:bottomRight
+                                                                                                                          imageViewBottom:topLeft2],
+                                                                                    [[FFShutteringViewRowItem alloc] initWithImageViewTop:topRight
+                                                                                                                          imageViewBottom:bottomLeft2],
+                                                                                    [[FFShutteringViewRowItem alloc] initWithImageViewTop:bottomLeft
+                                                                                                                          imageViewBottom:topRight2]
+                                                                                    ]];
+            
+            [self.onScreenImageViews addObject:row];
         }
     }
 }
 
 
-- (void)fire:(NSTimer *)timer{
-    if (self.shouldInvalidateTimer) {
+- (void)fire:(NSTimer *)timer
+{
+    if (self.shouldInvalidateTimer)
+    {
         [timer invalidate];
+        
         self.shouldInvalidateTimer = NO;
     }
-    for (UIView *subview in self.subviews) {
-        
-        
-        if (subview.tag > 1 ){
-            subview.tag--;
-        }
-        
-        if (subview.tag == 1 || subview.tag == 0) {
-            subview.alpha += subview.tag == 0 ? -0.01f : 0.01f;
-        }
-        
-        if (subview.alpha >= 0.8f) {
-            subview.tag = 0;
-        }
-        if (subview.alpha <= 0.0f) {
-            //defines maximum possible amount of time a triangle may be dead (alpha 0) before coming back to life
-            u_int32_t intRandom = arc4random();
-            if (subview.frame.origin.y > self.topBottomMarginMaskLength/2.0f && subview.frame.origin.y < self.frame.size.height - self.topBottomMarginMaskLength/2.0f) {
-                //Hard coded layering. Middle halves closer to center experience 5x longer death than their further half counterparts
-                subview.tag = (intRandom % (self.maximumAllowedDeathTicks * 5)) + 1;
-            }
-            else {
-                subview.tag = (intRandom % self.maximumAllowedDeathTicks) + 1;
+    
+    for(FFShutteringViewRow *row in _onScreenImageViews)
+    {
+        for(FFShutteringViewRowItem *item in row.items)
+        {
+            for(UIImageView *imageView in item.imageViews)
+            {
+                if(imageView.tag > 1 )
+                {
+                    imageView.tag--;
+                }
+                
+                if((imageView.tag == 1)
+                   || (imageView.tag == 0))
+                {
+                    imageView.alpha += imageView.tag == 0 ? - 0.01f : 0.01f;
+                }
+                
+                if(imageView.alpha >= 0.8f)
+                {
+                    imageView.tag = 0;
+                }
+                
+                if(imageView.alpha <= 0.0f)
+                {
+                    //defines maximum possible amount of time a triangle may be dead (alpha 0) before coming back to life
+                    
+                    u_int32_t intRandom = arc4random();
+                    
+                    
+                    if((imageView.frame.origin.y > self.topBottomMarginMaskLength / 2.0f)
+                       && (imageView.frame.origin.y < self.frame.size.height - self.topBottomMarginMaskLength/2.0f))
+                    {
+                        //Hard coded layering. Middle halves closer to center experience 5x longer death than their further half counterparts
+                        
+                        imageView.tag = (intRandom % (self.maximumAllowedDeathTicks * 5)) + 1;
+                    }
+                    else
+                    {
+                        imageView.tag = (intRandom % self.maximumAllowedDeathTicks) + 1;
+                    }
+                }
             }
         }
     }
@@ -178,6 +211,7 @@
                 underneathSubview.hidden = YES;
 
             }
+            
             xCoord += width/2.0;
             //underneathSubview.hidden = YES;
             
@@ -194,3 +228,76 @@
     });
 }
 @end
+
+
+@interface FFShutteringViewRow ()
+
+@end
+
+@implementation FFShutteringViewRow
+
+- (instancetype)init
+{
+    self = [super init];
+    
+    if(self)
+    {
+        _items = [NSMutableArray array];
+    }
+    
+    return self;
+}
+
+- (instancetype)initWithItems:(NSArray *)items
+{
+    self = [self init];
+    
+    if(self)
+    {
+        [_items addObjectsFromArray:items];
+    }
+    
+    return self;
+}
+
+@end
+
+
+@interface FFShutteringViewRowItem ()
+
+@end
+
+@implementation FFShutteringViewRowItem
+
+- (instancetype)initWithImageViewTop:(UIImageView *)imageViewTop imageViewBottom:(UIImageView *)imageViewBottom
+{
+    self = [super init];
+    
+    if(self)
+    {
+        _imageViewTop = imageViewTop;
+        _imageViewBottom = imageViewBottom;
+    }
+    
+    return self;
+}
+
+- (NSArray *)imageViews
+{
+    NSMutableArray *arrayOfImageViews = [NSMutableArray array];
+    
+    if(_imageViewTop)
+    {
+        [arrayOfImageViews addObject:_imageViewTop];
+    }
+    
+    if(_imageViewBottom)
+    {
+        [arrayOfImageViews addObject:_imageViewBottom];
+    }
+    
+    return arrayOfImageViews;
+}
+
+@end
+
