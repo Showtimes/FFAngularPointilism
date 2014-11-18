@@ -70,15 +70,10 @@ typedef void (^CompletionBlock)();
 }
 - (instancetype)initWithImage:(UIImage *)image{
     if (self = [super initWithImage:image]) {
+        [self loadMatrix];
+
     }
     return self;
-}
-- (void)layoutSubviews{
-    [super layoutSubviews];
-    self.layer.frame = self.bounds;
-    [self loadMatrix];
-
-    
 }
 - (void)loadMatrix{
     num = 12;
@@ -126,7 +121,7 @@ typedef void (^CompletionBlock)();
 - (void)updateMaskToRect:(CGRect)rect{
     _shapeLayer.path = CGPathCreateWithRect(rect, NULL);
     currentRect = rect;
-    [_shapeLayer setNeedsDisplay];
+    //[_shapeLayer setNeedsDisplay];
     self.imageGrayscaleView.layer.mask = _shapeLayer;
 }
 + (UIColor *)getRGBAsFromImage:(UIImage*)image atX:(int)xx andY:(int)yy{
