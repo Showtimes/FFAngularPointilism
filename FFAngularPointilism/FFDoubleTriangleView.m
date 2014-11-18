@@ -62,7 +62,7 @@ typedef void (^CompletionBlock)();
 }
 
 - (NSTimeInterval)timerTimeInterval{
-    NSAssert(_timerTimeInterval > 0, @"TIME CANNOT BE LESS THAN 0");
+    NSAssert(_timerTimeInterval >= 0, @"TIME CANNOT BE LESS THAN 0");
     if (_timerTimeInterval == 0) {
         return 0.03;
     }
@@ -70,12 +70,14 @@ typedef void (^CompletionBlock)();
 }
 - (instancetype)initWithImage:(UIImage *)image{
     if (self = [super initWithImage:image]) {
-        [self loadMatrix];
     }
     return self;
 }
 - (void)layoutSubviews{
     [super layoutSubviews];
+    self.layer.frame = self.bounds;
+    [self loadMatrix];
+
     
 }
 - (void)loadMatrix{
@@ -100,10 +102,6 @@ typedef void (^CompletionBlock)();
             
         }
     }
-
-}
-- (void)awakeFromNib{
-    [self loadMatrix];
     _imageGrayscaleView = [[UIImageView alloc] initWithImage:[self convertToGreyscale:self.image]];
     _finalbwimage = self.imageGrayscaleView.image;
     _imageGrayscaleView.frame = self.bounds;
@@ -111,15 +109,18 @@ typedef void (^CompletionBlock)();
     
     _viewMask = [[UIView alloc] initWithFrame:self.frame];
     _viewMask.center = CGPointMake(_viewMask.center.x, _viewMask.center.y + _viewMask.frame.size.height/2.0);
-   // [self addSubview:_viewMask];
-   // self.imageGrayscaleView.maskView = _viewMask;
+    // [self addSubview:_viewMask];
+    // self.imageGrayscaleView.maskView = _viewMask;
     _shapeLayer = [[CAShapeLayer alloc] init];
     CGRect maskRect = CGRectZero;
     CGPathRef path = CGPathCreateWithRect(maskRect, NULL);
     _shapeLayer.path = path;
     CGPathRelease(path);
     self.imageGrayscaleView.layer.mask = _shapeLayer;
-    
+
+}
+- (void)awakeFromNib{
+    [self loadMatrix];
 }
 
 - (void)updateMaskToRect:(CGRect)rect{
