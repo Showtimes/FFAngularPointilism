@@ -116,12 +116,12 @@
             [self addSubview:topLeft2];
             
             //three box
-           /* [self addSubview:topRight];
+            [self addSubview:topRight];
             [self addSubview:bottomLeft2];
             
             //four
             [self addSubview:bottomLeft];
-            [self addSubview:topRight2];*/
+            [self addSubview:topRight2];
             
             FFShutteringViewRow *row = [[FFShutteringViewRow alloc] initWithItems:@[
                                                                                     [[FFShutteringViewRowItem alloc] initWithImageViewTop:topLeft

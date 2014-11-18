@@ -11,7 +11,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "FFDoubleTriangleView.h"
 @interface TPViewController ()
-@property (weak, nonatomic) IBOutlet FFDoubleTriangleView *imageView;
+@property (strong, nonatomic) FFDoubleTriangleView *imageView;
 @property (weak, nonatomic) IBOutlet UILabel *label;
 @property (strong, nonatomic, readwrite) UIImage *image;
 @property (weak, nonatomic) IBOutlet UISlider *slider;
@@ -35,8 +35,8 @@
 }
 - (void)viewDidLoad{
     
-    FFDoubleTriangleView *testImageView = [[FFDoubleTriangleView alloc] initWithImage:self.image];
-    
+    _imageView = [[FFDoubleTriangleView alloc] initWithImage:[UIImage imageNamed:@"ww"]];
+    [self.view addSubview:self.imageView];
     [super viewDidLoad];
 }
 

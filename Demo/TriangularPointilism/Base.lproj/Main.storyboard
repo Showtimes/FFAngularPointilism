@@ -106,9 +106,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ww" translatesAutoresizingMaskIntoConstraints="NO" id="0Rb-C8-qiu" customClass="FFDoubleTriangleView">
-                                <rect key="frame" x="40" y="20" width="240" height="301"/>
-                            </imageView>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BAd-6V-AvY">
                                 <rect key="frame" x="40" y="259" width="240" height="284"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -157,7 +154,6 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Mosaic" id="kz3-94-kWH"/>
                     <connections>
-                        <outlet property="imageView" destination="0Rb-C8-qiu" id="g0a-qR-rsh"/>
                         <outlet property="label" destination="ojH-Yi-JeV" id="SIM-BD-qzK"/>
                         <outlet property="slider" destination="Tvm-Id-Wxo" id="cui-s8-U3Q"/>
                         <outlet property="switchControl" destination="4fj-zK-YMY" id="0Gc-Rv-fbX"/>
@@ -170,9 +166,6 @@
             <point key="canvasLocation" x="186" y="-449"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="ww" width="160" height="200"/>
-    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
