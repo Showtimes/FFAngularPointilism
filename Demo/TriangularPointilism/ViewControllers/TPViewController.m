@@ -34,6 +34,9 @@
      
 }
 - (void)viewDidLoad{
+    
+    FFDoubleTriangleView *testImageView = [[FFDoubleTriangleView alloc] initWithImage:self.image];
+    
     [super viewDidLoad];
 }
 

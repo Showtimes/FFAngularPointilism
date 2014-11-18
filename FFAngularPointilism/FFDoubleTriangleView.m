@@ -119,6 +119,7 @@ typedef void (^CompletionBlock)();
     _shapeLayer.path = path;
     CGPathRelease(path);
     self.imageGrayscaleView.layer.mask = _shapeLayer;
+    
 }
 
 - (void)updateMaskToRect:(CGRect)rect{
@@ -148,7 +149,7 @@ typedef void (^CompletionBlock)();
     
     CGContextDrawImage(context, CGRectMake(0, 0, width, height), imageRef);
     CGContextRelease(context);
-    int byteIndex = (bytesPerRow * yy) + xx * bytesPerPixel;
+    unsigned long byteIndex = (bytesPerRow * yy) + xx * bytesPerPixel;
     
     CGFloat red   = (rawData[byteIndex]     * 1.0) / 255.0;
     CGFloat green = (rawData[byteIndex + 1] * 1.0) / 255.0;
@@ -159,8 +160,6 @@ typedef void (^CompletionBlock)();
     CGFloat y = red * pow(red, gamma) + green * pow(green, gamma) + blue * pow(blue, gamma);
     CGFloat lStar = 116 * pow(y, 1.0f/3.0f);
     lStar/=255.0f;
-    NSLog(@"lstar: %f", lStar);
-    CGFloat avg = (red + green + blue) / 3.0f;
     color = [UIColor colorWithWhite: lStar alpha:1.0f];
     free(rawData);
     return color;
@@ -252,26 +251,6 @@ typedef void (^CompletionBlock)();
     }
 }
 
-- (void)startRemovingFromBeginning{
-    NSTimer *timer = [NSTimer timerWithTimeInterval:self.timerTimeInterval target:self selector:@selector(fireRemoval:) userInfo:nil repeats:YES];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
-}
-
-- (void)fireRemoval:(NSTimer *)timer{
-    pixelRem++;
-    if (pixelRem >= self.array.count) {
-        pixelRem = 0;
-        rowRem++;
-    }
-    
-    //Otherwise index overflow
-    if (rowRem * self.array.count + pixelRem == self.array.count * self.array.count - 1) {
-        [timer invalidate];
-        return;
-    }
-    
-    [self removeTile];
-}
 - (void)removeTile{
     NSUInteger index = rowRem * self.array.count + pixelRem;
     
