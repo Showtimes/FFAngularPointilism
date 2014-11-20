@@ -166,6 +166,7 @@ typedef void (^CompletionBlock)();
     if (pixel == 5 && row == 2) {
        //s_imageGrayscaleView.hidden = NO;
        // [self startRemovingFromBeginning];
+        [self removeTile];
     }
     if (pixel >= self.array.count) {
         pixel = 0;
