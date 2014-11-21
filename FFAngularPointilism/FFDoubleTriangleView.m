@@ -47,6 +47,12 @@ typedef void (^CompletionBlock)();
     
 }
 
+- (void)awakeFromNib{
+    [super awakeFromNib];
+    
+    [self loadMatrix];
+}
+
 - (NSMutableArray *)ksubviews{
     if (!_ksubviews) {
         _ksubviews = [NSMutableArray array];
@@ -113,9 +119,6 @@ typedef void (^CompletionBlock)();
     CGPathRelease(path);
     self.imageGrayscaleView.layer.mask = _shapeLayer;
 
-}
-- (void)awakeFromNib{
-    [self loadMatrix];
 }
 
 - (void)updateMaskToRect:(CGRect)rect{
@@ -211,6 +214,8 @@ typedef void (^CompletionBlock)();
 }
 
 - (void)startBlackAndWhiteWithCompletion:(void (^)(void))completion{
+    [self loadMatrix];
+    
     [self executeTimer];
     _fromGray = YES;
     if (completion) {
@@ -277,7 +282,7 @@ typedef void (^CompletionBlock)();
 }
 
 
-- (UIImage *) convertToGreyscale:(UIImage *)i {
+- (UIImage *)convertToGreyscale:(UIImage *)i {
     
     int kRed = 1;
     int kGreen = 2;
