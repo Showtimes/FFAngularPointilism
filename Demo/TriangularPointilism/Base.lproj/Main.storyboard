@@ -17,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="o34-5a-Gqk" customClass="FFShutteringView">
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="o34-5a-Gqk">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
@@ -68,7 +68,7 @@
                     <tabBarItem key="tabBarItem" title="Shuttering" id="Sae-rr-lh7"/>
                     <connections>
                         <outlet property="buttonGod" destination="Ftr-E6-lds" id="W11-mO-XGS"/>
-                        <outlet property="shutteringView" destination="o34-5a-Gqk" id="2fy-Nn-zgY"/>
+                        <outlet property="containerShutteringView" destination="o34-5a-Gqk" id="j5G-if-Tve"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eyT-G0-NaT" userLabel="First Responder" sceneMemberID="firstResponder"/>
