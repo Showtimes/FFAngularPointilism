@@ -66,8 +66,18 @@
     return _images;
 }
 
-
+- (instancetype)initWithFrame:(CGRect)frame{
+    if (self = [super initWithFrame:frame]) {
+        [self customInitialization];
+    }
+    return self;
+}
 - (void)awakeFromNib{
+    [self customInitialization];
+}
+
+
+- (void)customInitialization{
     width = 32;
     NSArray *grayscales = @[@0.3, @0.15, @0.6, @0.45, @0.75, @0.0];
     for (int i = 0; i <= self.bounds.size.width; i += width) {
@@ -110,7 +120,7 @@
             //one box
             [self addSubview:topLeft];
             [self addSubview:bottomRight2];
-
+            
             //two box
             [self addSubview:bottomRight];
             [self addSubview:topLeft2];
@@ -137,8 +147,8 @@
             [self.onScreenImageViews addObject:row];
         }
     }
-}
 
+}
 
 - (void)fire:(NSTimer *)timer
 {
