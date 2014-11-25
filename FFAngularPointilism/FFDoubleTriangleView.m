@@ -76,8 +76,8 @@ typedef void (^CompletionBlock)();
     if (self = [super initWithImage:image]) {
         if (!CGRectIsInfinite(frame)) {
             self.frame = frame;
-            [self loadMatrix];
         }
+        [self loadMatrix];
     }
     return self;
 }
@@ -93,13 +93,13 @@ typedef void (^CompletionBlock)();
     }
     for (int i = 0; i < self.array.count; i++) {
         for (int j = 0; j < self.array.count; j++) {
-            [self.array[i] addObject:[[self class] getRGBAsFromImage:self.image atX:j * 2 * num andY: i * 2 * num]];
+            [self.array[i] addObject:[self  getRGBAsFromImage:self.image atX:j * 2 * num andY: i * 2 * num]];
             int xIndex = ((j * 2 * num) - (num/2.0));
             int yIndex = ((i * 2 * num) + (num/2.0));
             xIndex %= (int)width * 2;
             yIndex %= (int)width * 2;
             NSLog(@"%d", xIndex);
-            [self.array2[i] addObject:[[self class] getRGBAsFromImage:self.image atX:xIndex andY: yIndex]];
+            [self.array2[i] addObject:[self getRGBAsFromImage:self.image atX:xIndex andY: yIndex]];
             
         }
     }
@@ -130,7 +130,7 @@ typedef void (^CompletionBlock)();
     //[_shapeLayer setNeedsDisplay];
     self.imageGrayscaleView.layer.mask = _shapeLayer;
 }
-+ (UIColor *)getRGBAsFromImage:(UIImage*)image atX:(int)xx andY:(int)yy{
+- (UIColor *)getRGBAsFromImage:(UIImage*)image atX:(int)xx andY:(int)yy{
     /**
      * Modified logic from Olie via http://stackoverflow.com/a/1262893
      */
@@ -158,10 +158,16 @@ typedef void (^CompletionBlock)();
     CGFloat blue  = (rawData[byteIndex + 2] * 1.0) / 255.0;
     CGFloat alpha = (rawData[byteIndex + 3] * 1.0) / 255.0;
     byteIndex += 4;
+   
+    CGFloat lStar;
+    //first
     CGFloat gamma = 2.2f;
     CGFloat y = red * pow(red, gamma) + green * pow(green, gamma) + blue * pow(blue, gamma);
-    CGFloat lStar = 116 * pow(y, 1.0f/3.0f);
+    lStar = 116 * pow(y, 1.0f/3.0f);
     lStar/=255.0f;
+    
+    //second
+   // lStar = (MAX(blue, MAX(red, green)) + MIN(blue, MIN(red, green)))/2.0;
     color = [UIColor colorWithWhite: lStar alpha:1.0f];
     free(rawData);
     return color;
