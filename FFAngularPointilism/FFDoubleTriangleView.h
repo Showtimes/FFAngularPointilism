@@ -23,4 +23,5 @@
 
 //the final black and white image -- only available after nib instantiation
 @property (strong, nonatomic, readonly) UIImage *finalbwimage;
+- (instancetype)initWithImage:(UIImage *)image andFrame:(CGRect)frame;
 @end

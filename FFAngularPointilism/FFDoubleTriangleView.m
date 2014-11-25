@@ -69,9 +69,15 @@ typedef void (^CompletionBlock)();
     return _timerTimeInterval;
 }
 - (instancetype)initWithImage:(UIImage *)image{
-    if (self = [super initWithImage:image]) {
-        [self loadMatrix];
+    return [self initWithImage:image andFrame:CGRectInfinite];
+}
 
+- (instancetype)initWithImage:(UIImage *)image andFrame:(CGRect)frame{
+    if (self = [super initWithImage:image]) {
+        if (!CGRectIsInfinite(frame)) {
+            self.frame = frame;
+            [self loadMatrix];
+        }
     }
     return self;
 }

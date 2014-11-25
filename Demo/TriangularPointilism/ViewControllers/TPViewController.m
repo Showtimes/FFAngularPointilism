@@ -35,7 +35,7 @@
 }
 - (void)viewDidLoad{
     
-    _imageView = [[FFDoubleTriangleView alloc] initWithImage:[UIImage imageNamed:@"ww"]];
+    _imageView = [[FFDoubleTriangleView alloc] initWithImage:[UIImage imageNamed:@"ww"] andFrame:CGRectMake(30, 30, 200, 400)];
     [self.view addSubview:self.imageView];
     [super viewDidLoad];
 }
