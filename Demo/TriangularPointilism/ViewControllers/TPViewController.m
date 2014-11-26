@@ -46,15 +46,26 @@
     }];
 }
 
-- (IBAction)buttonPressed:(id)sender {
-    
-    
+- (IBAction)buttonPressed:(id)sender
+{
     self.slider.enabled = NO;
     self.imageView.timerTimeInterval = (1.001f - self.slider.value) / 5.0f;
-    if (self.switchControl.on) {
-        [self.imageView startBlackAndWhiteWithCompletion:nil];
+    
+    if(self.switchControl.on)
+    {
+        [self.imageView startAnimatedEffect:FFDoubleTriangleViewEffectBlackAndWhite
+        withCompletion:^
+        {
+            [[[UIAlertView alloc] initWithTitle:@"FFAngularPointilism"
+                                        message:@"Black and white animation finished."
+                                       delegate:self
+                              cancelButtonTitle:@"Ok"
+                              otherButtonTitles:nil]
+             show];
+        }];
     }
-    else {
+    else
+    {
         [self.imageView applyFilter];
     }
 }

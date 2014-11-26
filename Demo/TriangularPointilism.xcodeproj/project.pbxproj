@@ -60,6 +60,7 @@
 		697C133319F696F500970279 /* FFShutteringViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FFShutteringViewController.m; sourceTree = "<group>"; };
 		697C133419F696F500970279 /* TPViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPViewController.h; sourceTree = "<group>"; };
 		697C133519F696F500970279 /* TPViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPViewController.m; sourceTree = "<group>"; };
+		699862E41A2671450063ACBC /* FFDoubleTriangleViewEffect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFDoubleTriangleViewEffect.h; sourceTree = "<group>"; };
 		699AA98919F68D3B00967A95 /* FFDoubleTriangleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFDoubleTriangleView.h; sourceTree = "<group>"; };
 		699AA98A19F68D3B00967A95 /* FFDoubleTriangleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FFDoubleTriangleView.m; sourceTree = "<group>"; };
 		699AA98B19F68D3B00967A95 /* FFShutteringView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFShutteringView.h; sourceTree = "<group>"; };
@@ -189,6 +190,7 @@
 			children = (
 				699AA98919F68D3B00967A95 /* FFDoubleTriangleView.h */,
 				699AA98A19F68D3B00967A95 /* FFDoubleTriangleView.m */,
+				699862E41A2671450063ACBC /* FFDoubleTriangleViewEffect.h */,
 				699AA98B19F68D3B00967A95 /* FFShutteringView.h */,
 				699AA98C19F68D3B00967A95 /* FFShutteringView.m */,
 			);

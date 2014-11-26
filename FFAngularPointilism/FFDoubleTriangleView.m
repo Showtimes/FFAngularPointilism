@@ -8,7 +8,8 @@
 
 #import "FFDoubleTriangleView.h"
 #import <CoreGraphics/CoreGraphics.h>
-typedef void (^CompletionBlock)();
+
+#define FFDoubleTriangleView_DefaultTimerTimeInterval 0.03
 
 @interface FFDoubleTriangleView()
 
@@ -28,10 +29,7 @@ typedef void (^CompletionBlock)();
 
 @property (strong, nonatomic, readwrite) UIImage *finalbwimage;
 
-
-@property (nonatomic, strong) CompletionBlock completionBlock;
-
-@property (nonatomic) BOOL fromGray;
+@property (nonatomic, strong) void (^completionBlock)(void);
 
 @end
 
@@ -44,92 +42,149 @@ typedef void (^CompletionBlock)();
     NSUInteger pixelRem;
     
     CGRect currentRect;
+}
+
+- (instancetype)initWithImage:(UIImage *)image andFrame:(CGRect)frame
+{
+    self = [super initWithImage:image];
     
+    if(self)
+    {
+        if(!CGRectIsInfinite(frame))
+        {
+            self.frame = frame;
+            
+            _currentlyAnimatingEffect = FFDoubleTriangleViewEffectNone;
+        }
+        
+        [self loadMatrix];
+    }
+    
+    return self;
 }
 
-- (NSMutableArray *)ksubviews{
-    if (!_ksubviews) {
-        _ksubviews = [NSMutableArray array];
-    }
-    return _ksubviews;
-}
-
-- (NSMutableArray *)ksublayers{
-    if (!_ksublayers) {
-        _ksublayers = [NSMutableArray array];
-    }
-    return _ksublayers;
-}
-
-- (NSTimeInterval)timerTimeInterval{
-    NSAssert(_timerTimeInterval >= 0, @"TIME CANNOT BE LESS THAN 0");
-    if (_timerTimeInterval == 0) {
-        return 0.03;
-    }
-    return _timerTimeInterval;
-}
-- (instancetype)initWithImage:(UIImage *)image{
+- (instancetype)initWithImage:(UIImage *)image
+{
     return [self initWithImage:image andFrame:CGRectInfinite];
 }
 
-- (instancetype)initWithImage:(UIImage *)image andFrame:(CGRect)frame{
-    if (self = [super initWithImage:image]) {
-        if (!CGRectIsInfinite(frame)) {
-            self.frame = frame;
-        }
-        [self loadMatrix];
-    }
-    return self;
+- (void)awakeFromNib
+{
+    [self loadMatrix];
 }
-- (void)loadMatrix{
+
+#pragma mark Property accessors
+
+- (NSMutableArray *)ksubviews
+{
+    if(!_ksubviews)
+    {
+        _ksubviews = [NSMutableArray array];
+    }
+    
+    return _ksubviews;
+}
+
+- (NSMutableArray *)ksublayers
+{
+    if(!_ksublayers)
+    {
+        _ksublayers = [NSMutableArray array];
+    }
+    
+    return _ksublayers;
+}
+
+- (NSTimeInterval)timerTimeInterval
+{
+//    NSAssert(_timerTimeInterval >= 0, @"TIME CANNOT BE LESS THAN 0");
+    
+    if(_timerTimeInterval == 0)
+    {
+        return FFDoubleTriangleView_DefaultTimerTimeInterval;
+    }
+    
+    return _timerTimeInterval;
+}
+
+#pragma mark Public methods
+
+- (void)startAnimatedEffect:(FFDoubleTriangleViewEffect)effect withCompletion:(void (^)(void))completion
+{
+    _currentlyAnimatingEffect = effect;
+    
+    [self executeTimer];
+    
+    _completionBlock = [completion copy];
+}
+
+#pragma mark Private methods
+
+- (void)loadMatrix
+{
     num = 12;
     
     CGFloat width = self.bounds.size.width;
+    CGFloat height = self.bounds.size.height;
+    
     _array = [NSMutableArray array];
     _array2 = [NSMutableArray array];
-    for (int i = 0; i < width; i+=num) {
+    
+    for(int i = 0; i < height; i += num)
+    {
         [self.array addObject:[NSMutableArray array]];
         [self.array2 addObject:[NSMutableArray array]];
     }
-    for (int i = 0; i < self.array.count; i++) {
-        for (int j = 0; j < self.array.count; j++) {
-            [self.array[i] addObject:[self  getRGBAsFromImage:self.image atX:j * 2 * num andY: i * 2 * num]];
-            int xIndex = ((j * 2 * num) - (num/2.0));
-            int yIndex = ((i * 2 * num) + (num/2.0));
+    
+    for(int i = 0; i < self.array.count; i++)
+    {
+        for(int j = 0; j < self.array.count; j++)
+        {
+            [self.array[i] addObject:[self getRGBAsFromImage:self.image
+                                                         atX:j * 2 * num
+                                                        andY:i * 2 * num]];
+            
+            int xIndex = ((j * 2 * num) - (num / 2.0));
+            int yIndex = ((i * 2 * num) + (num / 2.0));
             xIndex %= (int)width * 2;
             yIndex %= (int)width * 2;
             NSLog(@"%d", xIndex);
-            [self.array2[i] addObject:[self getRGBAsFromImage:self.image atX:xIndex andY: yIndex]];
             
+            [self.array2[i] addObject:[self getRGBAsFromImage:self.image
+                                                          atX:xIndex
+                                                         andY:yIndex]];
         }
     }
+    
     _imageGrayscaleView = [[UIImageView alloc] initWithImage:[self convertToGreyscale:self.image]];
     _finalbwimage = self.imageGrayscaleView.image;
     _imageGrayscaleView.frame = self.bounds;
     [self insertSubview:_imageGrayscaleView atIndex:0];
     
     _viewMask = [[UIView alloc] initWithFrame:self.frame];
-    _viewMask.center = CGPointMake(_viewMask.center.x, _viewMask.center.y + _viewMask.frame.size.height/2.0);
-    // [self addSubview:_viewMask];
-    // self.imageGrayscaleView.maskView = _viewMask;
+    
+    _viewMask.center = CGPointMake(_viewMask.center.x,
+                                   _viewMask.center.y + _viewMask.frame.size.height / 2.0f);
+    
+//     [self addSubview:_viewMask];
+//     self.imageGrayscaleView.maskView = _viewMask;
+    
     _shapeLayer = [[CAShapeLayer alloc] init];
     CGRect maskRect = CGRectZero;
     CGPathRef path = CGPathCreateWithRect(maskRect, NULL);
     _shapeLayer.path = path;
     CGPathRelease(path);
     self.imageGrayscaleView.layer.mask = _shapeLayer;
-
-}
-- (void)awakeFromNib{
-    [self loadMatrix];
 }
 
-- (void)updateMaskToRect:(CGRect)rect{
+- (void)updateMaskToRect:(CGRect)rect
+{
     _shapeLayer.path = CGPathCreateWithRect(rect, NULL);
     currentRect = rect;
-    //[_shapeLayer setNeedsDisplay];
+//    [_shapeLayer setNeedsDisplay];
     self.imageGrayscaleView.layer.mask = _shapeLayer;
 }
+
 - (UIColor *)getRGBAsFromImage:(UIImage*)image atX:(int)xx andY:(int)yy{
     /**
      * Modified logic from Olie via http://stackoverflow.com/a/1262893
@@ -167,116 +222,148 @@ typedef void (^CompletionBlock)();
     lStar/=255.0f;
     
     //second
-   // lStar = (MAX(blue, MAX(red, green)) + MIN(blue, MIN(red, green)))/2.0;
+//    lStar = (MAX(blue, MAX(red, green)) + MIN(blue, MIN(red, green))) / 2.0f;
     color = [UIColor colorWithWhite: lStar alpha:1.0f];
     free(rawData);
     return color;
 }
-- (void)fire:(NSTimer *)timer{
-    pixel++;
-    BOOL startRawGray = row * self.array.count + pixel > 5 * self.array.count + 5;
-    if (pixel == 5 && row == 2) {
-       //s_imageGrayscaleView.hidden = NO;
-       // [self startRemovingFromBeginning];
-        [self removeTile];
-    }
-    if (pixel >= self.array.count) {
-        pixel = 0;
-        row++;
-    }
-    if (row >= self.array.count) {
-       // [timer invalidate];
-        
-        
-        //[self bringSubviewToFront:_imageGrayscaleView];
-      //  return;
-    }
-    else {
-        [self drawTile];
 
-    }
-    if (startRawGray && self.fromGray) {
-        
-        
-        CGRect newRect = CGRectMake(0, 0, self.frame.size.width, (num ) * (rowRem +1 ));
-        [self updateMaskToRect:newRect];
-        
-        
-        pixelRem++;
-        if (pixelRem >= self.array.count) {
-            pixelRem = 0;
-            rowRem++;
-        }
-        
-        //Otherwise index overflow
-        if (rowRem * self.array.count + pixelRem == self.array.count * self.array.count - 1) {
-            [timer invalidate];
-            if (_completionBlock) {
-                _completionBlock();
-            }
-            return;
-        }
-        
+- (void)fire:(NSTimer *)timer
+{
+    pixel++;
+    
+    BOOL startRawGray = row * self.array.count + pixel > 5 * self.array.count + 5;
+    
+    if(pixel == 5 && row == 2)
+    {
+//        s_imageGrayscaleView.hidden = NO;
+//        [self startRemovingFromBeginning];
         [self removeTile];
     }
     
-}
-
-- (void)startBlackAndWhiteWithCompletion:(void (^)(void))completion{
-    [self executeTimer];
-    _fromGray = YES;
-    if (completion) {
-        _completionBlock = completion;
-    }
-}
-
-- (void)startMosaicFilterWithCompletion:(void (^)(void))completion{
-    _fromGray = NO;
-    [self executeTimer];
-    if (completion) {
-        _completionBlock = completion;
-    }
-}
-
-- (void)executeTimer{
-    NSTimer *timer = [NSTimer timerWithTimeInterval:self.timerTimeInterval target:self selector:@selector(fire:) userInfo:nil repeats:YES];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
-}
-
-- (void)applyFilter{
-    while (row < self.array.count) {
-    pixel++;
-    if (pixel >= self.array.count) {
+    if(pixel >= self.array.count)
+    {
         pixel = 0;
         row++;
     }
-        if (row == self.array.count) {
-            self.image = self.imageGrayscaleView.image;
-           // [self startRemovingFromBeginning];
+    
+    if(row >= self.array.count)
+    {
+//        [timer invalidate];
+//        
+//        
+//        [self bringSubviewToFront:_imageGrayscaleView];
+//        return;
+    }
+    else
+    {
+        [self drawTile];
+    }
+    
+    switch(_currentlyAnimatingEffect)
+    {
+        case FFDoubleTriangleViewEffectBlackAndWhite:
+        {
+            if(startRawGray)
+            {
+                CGRect newRect = CGRectMake(0, 0, self.frame.size.width, (num ) * (rowRem +1 ));
+                [self updateMaskToRect:newRect];
+                
+                pixelRem++;
+                
+                if(pixelRem >= self.array.count)
+                {
+                    pixelRem = 0;
+                    rowRem++;
+                }
+                
+                //Otherwise index overflow
+                if(rowRem * self.array.count + pixelRem == self.array.count * self.array.count - 1)
+                {
+                    [timer invalidate];
+                    
+                    _currentlyAnimatingEffect = FFDoubleTriangleViewEffectNone;
+                    
+                    if (_completionBlock)
+                    {
+                        _completionBlock();
+                        _completionBlock = nil;
+                    }
+                    
+                    return;
+                }
+                
+                [self removeTile];
+            }
+            
             break;
         }
+        case FFDoubleTriangleViewEffectMosaicFilter:
+        {
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
+}
+
+- (void)executeTimer
+{
+    NSTimer *timer = [NSTimer timerWithTimeInterval:self.timerTimeInterval
+                                             target:self
+                                           selector:@selector(fire:)
+                                           userInfo:nil
+                                            repeats:YES];
     
+    [[NSRunLoop currentRunLoop] addTimer:timer
+                                 forMode:NSDefaultRunLoopMode];
+}
+
+- (void)applyFilter
+{
+    while(row < self.array.count)
+    {
+        pixel++;
+        
+        if (pixel >= self.array.count)
+        {
+            pixel = 0;
+            row++;
+        }
+        
+        if(row == self.array.count)
+        {
+            self.image = self.imageGrayscaleView.image;
+//             [self startRemovingFromBeginning];
+            break;
+        }
+        
         [self drawTile];
     }
 }
 
-- (void)removeTile{
+- (void)removeTile
+{
     NSUInteger index = rowRem * self.array.count + pixelRem;
     
-        CAShapeLayer *layer = self.ksublayers[index];
-        [layer removeFromSuperlayer];
+    CAShapeLayer *layer = self.ksublayers[index];
+    [layer removeFromSuperlayer];
     
     UIView *view = self.ksubviews[index];
     [view removeFromSuperview];
 }
-- (void)drawTile{
+
+- (void)drawTile
+{
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(pixel * num, row * num, num, num)];
     view.backgroundColor = [self.array[row] objectAtIndex:pixel];
     [self addSubview:view];
     [self.ksubviews addObject:view];
     UIBezierPath *path = [UIBezierPath bezierPath];
     [path moveToPoint:CGPointMake(view.frame.origin.x , view.frame.origin.y + (view.frame.size.height))];
-    [path addLineToPoint:CGPointMake(view.frame.origin.x , view.frame.origin.y )];
+    [path addLineToPoint:CGPointMake(view.frame.origin.x , view.frame.origin.y)];
     [path addLineToPoint:CGPointMake(view.frame.origin.x + view.frame.size.width, view.frame.origin.y + view.frame.size.height)];
     [path closePath];
     CAShapeLayer *shapeLayer = [CAShapeLayer layer];
@@ -289,8 +376,8 @@ typedef void (^CompletionBlock)();
 }
 
 
-- (UIImage *) convertToGreyscale:(UIImage *)i {
-    
+- (UIImage *)convertToGreyscale:(UIImage *)i
+{
     int kRed = 1;
     int kGreen = 2;
     int kBlue = 4;
@@ -309,34 +396,64 @@ typedef void (^CompletionBlock)();
     CGColorSpaceRelease(colorSpace);
     
     // now convert to grayscale
-    uint8_t *m_imageData = (uint8_t *) malloc(m_width * m_height);
-    for(int y = 0; y < m_height; y++) {
-        for(int x = 0; x < m_width; x++) {
-            uint32_t rgbPixel=rgbImage[y*m_width+x];
-            uint32_t sum=0,count=0;
-            if (colors & kRed) {sum += (rgbPixel>>24)&255; count++;}
-            if (colors & kGreen) {sum += (rgbPixel>>16)&255; count++;}
-            if (colors & kBlue) {sum += (rgbPixel>>8)&255; count++;}
-            m_imageData[y*m_width+x]=sum/count;
+    uint8_t *m_imageData = (uint8_t *)malloc(m_width * m_height);
+    
+    for(int y = 0; y < m_height; y++)
+    {
+        for(int x = 0; x < m_width; x++)
+        {
+            uint32_t rgbPixel = rgbImage[y * m_width + x];
+            uint32_t sum = 0;
+            uint32_t count = 0;
+            
+            if(colors & kRed)
+            {
+                sum += (rgbPixel >> 24) & 255;
+                count++;
+            }
+            
+            if(colors & kGreen)
+            {
+                sum += (rgbPixel>>16)&255;
+                count++;
+            }
+            
+            if(colors & kBlue)
+            {
+                sum += (rgbPixel >> 8) & 255;
+                count++;
+            }
+            
+            m_imageData[y * m_width + x] = sum / count;
         }
     }
+    
     free(rgbImage);
     
     // convert from a gray scale image back into a UIImage
-    uint8_t *result = (uint8_t *) calloc(m_width * m_height *sizeof(uint32_t), 1);
+    uint8_t *result = (uint8_t *)calloc(m_width * m_height * sizeof(uint32_t), 1);
     
     // process the image back to rgb
-    for(int i = 0; i < m_height * m_width; i++) {
-        result[i*4]=0;
-        int val=m_imageData[i];
-        result[i*4+1]=val;
-        result[i*4+2]=val;
-        result[i*4+3]=val;
+    for(int i = 0; i < m_height * m_width; i++)
+    {
+        result[i * 4] = 0;
+        int val = m_imageData[i];
+        result[i * 4 + 1] = val;
+        result[i * 4 + 2] = val;
+        result[i * 4 + 3] = val;
     }
     
     // create a UIImage
     colorSpace = CGColorSpaceCreateDeviceRGB();
-    context = CGBitmapContextCreate(result, m_width, m_height, 8, m_width * sizeof(uint32_t), colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaNoneSkipLast);
+    
+    context = CGBitmapContextCreate(result,
+                                    m_width,
+                                    m_height,
+                                    8,
+                                    m_width * sizeof(uint32_t),
+                                    colorSpace,
+                                    kCGBitmapByteOrder32Little | kCGImageAlphaNoneSkipLast);
+    
     CGImageRef image = CGBitmapContextCreateImage(context);
     CGContextRelease(context);
     CGColorSpaceRelease(colorSpace);
@@ -346,7 +463,8 @@ typedef void (^CompletionBlock)();
     free(m_imageData);
     
     // make sure the data will be released by giving it to an autoreleased NSData
-    [NSData dataWithBytesNoCopy:result length:m_width * m_height];
+    [NSData dataWithBytesNoCopy:result
+                         length:m_width * m_height];
     
     return resultUIImage;
 }

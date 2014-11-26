@@ -7,21 +7,24 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FFDoubleTriangleViewEffect.h"
+
 /**
  * ## This subclass supports both nib and programmatic instantiation ##
  */
 @interface FFDoubleTriangleView : UIImageView
 
+- (instancetype)initWithImage:(UIImage *)image andFrame:(CGRect)frame;
 
 //Non-Animation Functionality
 - (void)applyFilter;
 
 // Animation Functionality
 @property (nonatomic) NSTimeInterval timerTimeInterval;
-- (void)startBlackAndWhiteWithCompletion:(void (^)(void))completion;
-- (void)startMosaicFilterWithCompletion:(void (^)(void))completion;
+@property (readonly) FFDoubleTriangleViewEffect currentlyAnimatingEffect;
+- (void)startAnimatedEffect:(FFDoubleTriangleViewEffect)effect withCompletion:(void (^)(void))completion;
 
 //the final black and white image -- only available after nib instantiation
 @property (strong, nonatomic, readonly) UIImage *finalbwimage;
-- (instancetype)initWithImage:(UIImage *)image andFrame:(CGRect)frame;
+
 @end

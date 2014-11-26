@@ -159,7 +159,7 @@
         self.shouldInvalidateTimer = NO;
     }
     
-    for(FFShutteringViewRow *row in _onScreenImageViews)
+    for(FFShutteringViewRow *row in self.onScreenImageViews)
     {
         for(FFShutteringViewRowItem *item in row.items)
         {
