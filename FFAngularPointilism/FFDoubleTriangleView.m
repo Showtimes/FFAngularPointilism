@@ -112,10 +112,9 @@
 - (void)startAnimatedEffect:(FFDoubleTriangleViewEffect)effect withCompletion:(void (^)(void))completion
 {
     _currentlyAnimatingEffect = effect;
+    _completionBlock = [completion copy];
     
     [self executeTimer];
-    
-    _completionBlock = [completion copy];
 }
 
 #pragma mark Private methods
@@ -126,11 +125,12 @@
     
     CGFloat width = self.bounds.size.width;
     CGFloat height = self.bounds.size.height;
+    CGFloat theBiggestSideLength = MAX(width, height);
     
     _array = [NSMutableArray array];
     _array2 = [NSMutableArray array];
     
-    for(int i = 0; i < height; i += num)
+    for(int i = 0; i < theBiggestSideLength; i += num)
     {
         [self.array addObject:[NSMutableArray array]];
         [self.array2 addObject:[NSMutableArray array]];
