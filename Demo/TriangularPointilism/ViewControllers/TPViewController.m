@@ -53,7 +53,7 @@
     
     if(self.switchControl.on)
     {
-        [self.imageView startAnimatedEffect:FFDoubleTriangleViewEffectBlackAndWhite
+        [self.imageView startAnimatedEffect:FFDoubleTriangleViewEffectMosaicFilter
         withCompletion:^
         {
             [[[UIAlertView alloc] initWithTitle:@"FFAngularPointilism"
