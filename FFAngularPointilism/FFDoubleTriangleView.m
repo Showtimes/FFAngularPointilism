@@ -57,7 +57,6 @@
             _currentlyAnimatingEffect = FFDoubleTriangleViewEffectNone;
         }
         
-        [self loadMatrix];
     }
     
     return self;
@@ -70,7 +69,13 @@
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
+    //[self loadMatrix];
+}
+
+- (void)snapshotMatrix{
     [self loadMatrix];
+
 }
 
 #pragma mark Property accessors
@@ -121,10 +126,10 @@
 
 - (void)loadMatrix
 {
-    num = 12;
+    num = self.frame.size.width/14;
     
-    CGFloat width = self.bounds.size.width;
-    CGFloat height = self.bounds.size.height;
+    CGFloat width = self.frame.size.width;
+    CGFloat height = self.frame.size.height;
     CGFloat theBiggestSideLength = MAX(width, height);
     
     _array = [NSMutableArray array];
@@ -141,11 +146,11 @@
         for(int j = 0; j < self.array.count; j++)
         {
             [self.array[i] addObject:[self getRGBAsFromImage:self.image
-                                                         atX:j * 2 * num
-                                                        andY:i * 2 * num]];
+                                                         atX:j * 2 * num * (width / self.frame.size.width)
+                                                        andY:i * 2 * num * (height / self.frame.size.height)]];
             
-            int xIndex = ((j * 2 * num) - (num / 2.0));
-            int yIndex = ((i * 2 * num) + (num / 2.0));
+            int xIndex = ((j * 2 * num * (width / self.frame.size.width)) - (num / 2.0));
+            int yIndex = ((i * 2 * num * (height / self.frame.size.height)) + (num / 2.0));
             xIndex %= (int)width * 2;
             yIndex %= (int)width * 2;
             NSLog(@"%d", xIndex);
@@ -192,8 +197,9 @@
      
     UIColor *color;
     CGImageRef imageRef = [image CGImage];
-    NSUInteger width = CGImageGetWidth(imageRef);
-    NSUInteger height = CGImageGetHeight(imageRef);
+    
+    NSUInteger width = CGImageGetWidth(imageRef) ;
+    NSUInteger height = CGImageGetHeight(imageRef) * (self.frame.size.width / self.bounds.size.width);
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     unsigned char *rawData = (unsigned char*) calloc(height * width * 4, sizeof(unsigned char));
     NSUInteger bytesPerPixel = 4;
@@ -337,6 +343,7 @@
         {
             self.image = self.imageGrayscaleView.image;
 //             [self startRemovingFromBeginning];
+            [self sizeToFit];
             break;
         }
         

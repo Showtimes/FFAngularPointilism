@@ -36,7 +36,9 @@
 - (void)viewDidLoad{
     
     _imageView = [[FFDoubleTriangleView alloc] initWithImage:[UIImage imageNamed:@"ww"]];
+    _imageView.center = CGPointMake( _imageView.bounds.size.width/2.0, _imageView.bounds.size.height/2.0);
     [self.view addSubview:self.imageView];
+    [self.imageView snapshotMatrix];
     [super viewDidLoad];
 }
 
@@ -53,7 +55,7 @@
     
     if(self.switchControl.on)
     {
-        [self.imageView startAnimatedEffect:FFDoubleTriangleViewEffectMosaicFilter
+        [self.imageView startAnimatedEffect:FFDoubleTriangleViewEffectBlackAndWhite
         withCompletion:^
         {
             [[[UIAlertView alloc] initWithTitle:@"FFAngularPointilism"
